@@ -15,9 +15,7 @@ const AudioRecorderComponent = ({ onRecordingComplete }) => {
         }
     };
 
-    const {
-        recordingBlob,
-    } = useAudioRecorder();
+    useAudioRecorder();
 
     return (
         <div className='recorder'>

@@ -2,8 +2,8 @@ import React from 'react'
 import './messages.css'
 const Messages = () => {
     return (
-        <div>
-            <div className='seatch'>
+        <div className='all_messages'>
+            <div className='search_container'>
                 <input type='text' className='search' name='search' placeholder='Search conversation' />
             </div>
             <div className='notification_box'>

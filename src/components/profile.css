@@ -1,0 +1,51 @@
+.recipient_profile{
+    display: block;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.Profile_avatar_section{
+    padding: 1rem;
+    display: block;
+    width: 90%;
+    overflow: hidden;
+}
+.user_avatar_section{
+    width: 120px;
+    height: 120px;
+    border: 1px solid red;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.about_user{
+    font-size: 1rem;
+    border-bottom: 1px solid #eeee;
+}
+.about_user p{
+    color: #474747;
+    
+}
+.address{
+    color: #757575;
+}
+.social_pages{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.social_pages .instagram, .facebook, .twitter{
+    margin: .5rem;
+    font-size: 1.6rem;
+}
+.social_pages .instagram{
+    color: #970873c2;
+    font-weight: 900;
+}
+.social_pages .twitter{
+    color: #20aef0;
+}
+.social_pages .facebook{
+    color: #004869;
+}

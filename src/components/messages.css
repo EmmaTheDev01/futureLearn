@@ -1,5 +1,16 @@
+.all_messages{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 249);
+}
+.search_container{
+    padding: 0;
+    margin: 0;
+    position: sticky;
+}
 .search{
-    position: relativeasa;
+    position: relative;
     margin-top: 1rem;
     width: 90%;
     padding: 0.4rem;
@@ -14,8 +25,9 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    box-shadow: #e7e7e7 2px 3px 10px;
+    box-shadow: #e7e7e7 10px 3px 10px 0px;
     border-radius: 10px;
+    background-color: #fff;
 }
 .message_avatar{
     overflow: hidden;

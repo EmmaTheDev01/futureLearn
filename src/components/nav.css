@@ -14,10 +14,13 @@
     list-style-type: none;
     padding: 1rem;
     text-align: start;
+    color: #ebebeb;
+    font-size: 1.4rem;
+    cursor: pointer;
 }
 .user{
     margin-bottom: 2rem;
 }
 .settings{
-    margin-top: 18rem;
+    margin-top: 15rem;
 }

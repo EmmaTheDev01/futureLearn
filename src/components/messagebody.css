@@ -14,7 +14,7 @@
     padding: .2rem;
 }
 
-.opponent_avatar {
+.recipient_avatar {
     overflow: hidden;
     padding: 1rem;
     border: 1px solid #7c7c7c;
@@ -24,29 +24,29 @@
     border-radius: 50%;
 }
 
-.opponent {
+.recipient {
     width: 100%;
     height: 30px;
     object-fit: cover;
 }
 
-.opponent_title {
+.recipient_title {
     width: 50%;
     padding: 0.5rem;
     margin-left: .5rem;
 }
 
-.opponent_title li {
+.recipient_title li {
     text-align: start;
     list-style-type: none;
 }
 
-.opponent_title .opponent_names {
+.recipient_title .recipient_names {
     font-size: 1rem;
     font-weight: 800;
 }
 
-.opponent_title .opponent_status {
+.recipient_title .recipient_status {
     color: #a5a5a5;
     font-size: .8rem;
 }
@@ -57,9 +57,9 @@
 }
 
 .actions .icon {
-    color: #7c7c7c;
+    color: #999999;
     padding: 1rem .5rem;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     cursor: pointer;
 }
 
@@ -75,13 +75,13 @@
     width: 5px;
 }
 
-.opponents_msg {
+.recipients_msg {
     float: left;
     text-align: start;
     width: 300px;
 }
 
-.opponents_msg .msg {
+.recipients_msg .msg {
     border: none;
     background-color: rgb(73, 207, 207);
     width: auto;
@@ -93,7 +93,7 @@
     color: #fff;
 }
 
-.opponents_msg .msg_status {
+.recipients_msg .msg_status {
     list-style-type: none;
     color: #7c7c7c;
     font-size: .8rem;
