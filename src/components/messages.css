@@ -31,21 +31,19 @@
 }
 .message_avatar{
     overflow: hidden;
-    padding: .5rem .5rem;
     width: 50px;
-    height: 30px;
+    height: 50px;
     background-color: #7c7c7c;
     border-radius: 50%;
     object-fit: cover;
 }
-.avatar_img{
+.message_user_avatar{
     width: 100%;
-    height: 40px;
+    height: 50px;
     object-fit: cover;
 }
 .message_header{
     margin-left: 0.5rem;
-    width: 100%;
     overflow: hidden;
     padding: .5rem;
 }

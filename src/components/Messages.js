@@ -8,7 +8,7 @@ const Messages = () => {
             </div>
             <div className='notification_box'>
                 <div className='message_avatar'>
-                    <img className='avatar_img' alt='avatar image1' src='#'></img>
+                    <img className='message_user_avatar' alt='avatar image1' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s'></img>
                 </div>
                 <div className='message_header'>
                     <li className='message_sender'>Emille</li>
@@ -21,7 +21,7 @@ const Messages = () => {
             </div>
             <div className='notification_box'>
                 <div className='message_avatar'>
-                    <img className='avatar_img' alt='avatar image2' src='https://media.licdn.com/dms/image/D4E03AQHr2n5ivKrvaw/profile-displayphoto-shrink_200_200/0/1690097978013?e=2147483647&v=beta&t=N5mqcDi5fGLt90Lanor0LeU8-SxK0ri4MchYZAP2aJE'></img>
+                    <img className='message_user_avatar' alt='avatar image2' src='https://media.licdn.com/dms/image/D4E03AQHr2n5ivKrvaw/profile-displayphoto-shrink_200_200/0/1690097978013?e=2147483647&v=beta&t=N5mqcDi5fGLt90Lanor0LeU8-SxK0ri4MchYZAP2aJE'></img>
                 </div>
                 <div className='message_header'>
                     <li className='message_sender'>Habumugisha</li>
@@ -34,7 +34,7 @@ const Messages = () => {
             </div>
             <div className='notification_box'>
                 <div className='message_avatar'>
-                    <img className='avatar_img' alt='avatar image3' src='#'></img>
+                    <img className='message_user_avatar' alt='avatar image3' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s'></img>
                 </div>
                 <div className='message_header'>
                     <li className='message_sender'>Kwizera</li>
@@ -47,7 +47,7 @@ const Messages = () => {
             </div>
             <div className='notification_box'>
                 <div className='message_avatar'>
-                    <img className='avatar_img' alt='avatar image4' src='#'></img>
+                    <img className='message_user_avatar' alt='avatar image4' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s'></img>
                 </div>
                 <div className='message_header'>
                     <li className='message_sender'>Emma H</li>
@@ -60,7 +60,7 @@ const Messages = () => {
             </div>
             <div className='notification_box'>
                 <div className='message_avatar'>
-                    <img className='avatar_img' alt='avatar image5' src='#'></img>
+                    <img className='message_user_avatar' alt='avatar image5' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s'></img>
                 </div>
                 <div className='message_header'>
                     <li className='message_sender'>Mutesi Annet</li>
