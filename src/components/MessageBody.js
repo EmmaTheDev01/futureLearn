@@ -12,7 +12,7 @@ const MessageBody = () => {
         <div className='conersation_body'>
             <div className='body_navigation'>
                 <div className='recipient_avatar'>
-                    <img src='' className='recipient' alt='avatar' />
+                    <img src='https://media.licdn.com/dms/image/D4E03AQHr2n5ivKrvaw/profile-displayphoto-shrink_200_200/0/1690097978013?e=2147483647&v=beta&t=N5mqcDi5fGLt90Lanor0LeU8-SxK0ri4MchYZAP2aJE' className='recipient' alt='avatar' />
                 </div>
                 <div className='recipient_title'>
                     <li className='recipient_names'>Habumugisha</li>

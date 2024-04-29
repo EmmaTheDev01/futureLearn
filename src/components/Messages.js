@@ -21,7 +21,7 @@ const Messages = () => {
             </div>
             <div className='notification_box'>
                 <div className='message_avatar'>
-                    <img className='avatar_img' alt='avatar image2' src='#'></img>
+                    <img className='avatar_img' alt='avatar image2' src='https://media.licdn.com/dms/image/D4E03AQHr2n5ivKrvaw/profile-displayphoto-shrink_200_200/0/1690097978013?e=2147483647&v=beta&t=N5mqcDi5fGLt90Lanor0LeU8-SxK0ri4MchYZAP2aJE'></img>
                 </div>
                 <div className='message_header'>
                     <li className='message_sender'>Habumugisha</li>

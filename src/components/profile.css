@@ -1,51 +1,134 @@
-.recipient_profile{
+.recipient_profile {
     display: block;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     overflow: auto;
+    background-color: #fefff5;
 }
-.Profile_avatar_section{
+
+.Profile_avatar_section {
     padding: 1rem;
     display: block;
     width: 90%;
     overflow: hidden;
 }
-.user_avatar_section{
+
+.user_avatar_section {
     width: 120px;
     height: 120px;
-    border: 1px solid red;
     border-radius: 50%;
     margin-left: auto;
     margin-right: auto;
+    overflow: hidden;
+    background-color: #757575;
 }
-.about_user{
+
+.user_avatar_section .avatar_big {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.about_user {
+    padding: 1rem;
     font-size: 1rem;
     border-bottom: 1px solid #eeee;
 }
-.about_user p{
+
+.about_user p {
     color: #474747;
-    
+    text-align: start;
+    font-size: .9rem;
+
 }
-.address{
+
+.address {
     color: #757575;
+    font-size: .8rem;
 }
-.social_pages{
+
+.social_pages {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.social_pages .instagram, .facebook, .twitter{
+
+.social_pages .instagram,
+.facebook,
+.twitter {
     margin: .5rem;
     font-size: 1.6rem;
+    cursor: pointer;
 }
-.social_pages .instagram{
+
+.social_pages .instagram {
     color: #970873c2;
     font-weight: 900;
 }
-.social_pages .twitter{
+
+.social_pages .twitter {
     color: #20aef0;
 }
-.social_pages .facebook{
+
+.social_pages .facebook {
     color: #004869;
+}
+
+.personal_info {
+    padding: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #eeee;
+}
+
+.personal_info li {
+    list-style-type: none;
+    text-align: center;
+    padding: .5rem;
+    font-size: .9rem;
+}
+
+.personal_info .label {
+    color: #757575;
+
+}
+
+.media_section {
+    padding: 1rem;
+}
+
+.media_section li {
+    color: #757575;
+    text-align: start;
+    list-style-type: none;
+}
+
+.see_all {
+    text-align: end;
+    margin-left: 13rem;
+    color: aqua;
+    cursor: pointer;
+}
+
+.images_gallery {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: .5rem;
+}
+
+.image_box {
+    height: 3rem;
+    width: 3rem;
+    margin: .2rem;
+    background-color: #474747;
+    break-before: 4px;
+    overflow: hidden;
+}
+
+.shared_image {
+    object-fit: cover;
+    width: 100%;
+    height: 3rem;
 }
