@@ -10,7 +10,7 @@ const Home = () => {
                     <div className='logo'>
                         <h1>Login</h1>
                     </div>
-                    <form>
+                    <form id='login'>
                         <input className='email' name='email' placeholder='Enter your email address'></input>
                         <input className='password' name='password' placeholder='Enter your password' />
                         <button className='login_btn'>Login</button>

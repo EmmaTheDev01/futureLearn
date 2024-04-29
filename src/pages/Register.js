@@ -10,7 +10,7 @@ const Register = () => {
                     <div className='logo'>
                         <h1>Sign Up</h1>
                     </div>
-                    <form>
+                    <form id='register'>
                         <input className='text' name='firstname' placeholder='Enter your Firstname address'></input>
                         <input className='text' name='lastname' placeholder='Enter your lastname address'></input>
                         <input className='text' name='reg_no' placeholder='Enter your Reg Number address'></input>

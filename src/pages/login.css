@@ -41,7 +41,7 @@
     margin-right: auto;
 
 }
-form {
+#login {
     padding: 1rem;
     display: block;
     width: 90%;
@@ -51,7 +51,7 @@ form {
     overflow: hidden;
 }
 
-form input {
+#login input {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -62,7 +62,7 @@ form input {
     outline: none;
 }
 
-form input:focus {
+#login input:focus {
     border-bottom: 2px solid #22ec94;
 }
 
