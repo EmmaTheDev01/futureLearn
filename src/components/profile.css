@@ -8,6 +8,10 @@
     background-color: #fefff5;
 }
 
+.recipient_profile::-webkit-scrollbar {
+    width: 5px;
+}
+
 .Profile_avatar_section {
     padding: 1rem;
     display: block;
@@ -35,6 +39,13 @@
     padding: 1rem;
     font-size: 1rem;
     border-bottom: 1px solid #eeee;
+}
+
+.about_user .user_names {
+    display: block;
+    font-size: 1.2rem;
+    color: #000;
+    font-weight: 700;
 }
 
 .about_user p {
@@ -104,13 +115,6 @@
     list-style-type: none;
 }
 
-.see_all {
-    text-align: end;
-    margin-left: 13rem;
-    color: aqua;
-    cursor: pointer;
-}
-
 .images_gallery {
     display: flex;
     justify-content: flex-start;
@@ -126,6 +130,7 @@
     background-color: #474747;
     break-before: 4px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .shared_image {

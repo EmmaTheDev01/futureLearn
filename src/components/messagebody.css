@@ -1,6 +1,4 @@
-.message_body {
-    display: block;
-    height: 100vh;
+.conversation_body {
     overflow: hidden;
 }
 
@@ -57,18 +55,24 @@
 }
 
 .actions .icon {
-    color: #999999;
+    color: #8eb191;
     padding: 1rem .5rem;
     font-size: 1.2rem;
     cursor: pointer;
 }
+.actions .icon:hover {
+    color: #0d9918;
+}
 
 /* Styling the conversations  */
 .conversations {
+    display: block;
+    position: relative;
     padding: 1rem;
-    margin-top: 1rem;
     overflow: auto;
-    height: 70vh;
+    height: 72vh;
+    background-color: rgb(255, 247, 234);
+    z-index: 0;
 }
 
 .conversations::-webkit-scrollbar {
@@ -76,14 +80,18 @@
 }
 
 .recipients_msg {
+    display: block;
+    width: 300px;
+    padding: .5rem;
     float: left;
     text-align: start;
-    width: 300px;
+    margin: 1rem;
 }
 
 .recipients_msg .msg {
     border: none;
-    background-color: rgb(73, 207, 207);
+    background-color: #8eb191;
+    box-shadow: #d8d8d8 3px 0px 20px 10px;
     width: auto;
     height: auto;
     overflow: hidden;
@@ -102,18 +110,25 @@
 }
 
 .my_msg {
+    display: block;
     float: right;
     text-align: start;
     width: 300px;
+    margin: 1rem;
 }
 
+
 .my_msg .my_msg_text {
+    display: block;
     list-style-type: none;
-    background-color: #a5a5a5;
+    background-color: #fff;
+    box-shadow: #d8d8d8 3px 0px 20px 10px;
     padding: 1rem;
     width: auto;
     height: auto;
-    color: #fff;
+    color: #000000;
+    font-weight: 500;
+    font-size: .9rem;
     border: none;
     border-radius: 20px;
 }
@@ -127,8 +142,15 @@
 }
 
 .inputs {
+    width: 40.7%;
+    background-color: #fff;
+    z-index: 1;
     padding: 1rem;
     border-top: 1px solid #eceaea;
+    bottom: 0;
+    position: fixed;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .text_field {
@@ -147,7 +169,7 @@
 
 .text_field .message_field {
     padding: .5rem;
-    width: 50%;
+    width: 60%;
     border: none;
     background-color: #eeeeee;
     outline: none;
@@ -175,7 +197,7 @@
     border: none;
     font-size: 1.3rem;
     color: #fff;
-    background-color: aqua;
+    background-color: #0d9918;
     border-radius: 50%;
     float: right;
     padding: 0.3rem .5rem;

@@ -1,15 +1,19 @@
-.all_messages{
+.all_messages {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    background-color: rgb(255, 255, 249);
+    background-color: rgb(248, 248, 234);
 }
-.search_container{
+
+.search_container {
     padding: 0;
     margin: 0;
     position: sticky;
+    background-color: #fff;
+    border-bottom: 1px solid #eeee;
 }
-.search{
+
+.search {
     position: relative;
     margin-top: 1rem;
     width: 90%;
@@ -18,47 +22,57 @@
     border: none;
     background-color: rgb(235, 235, 241);
     margin-bottom: 1rem;
+    outline: none;
 }
-.notification_box{
-    margin-top: 0.5rem;
+
+.notification_box {
     padding: 1rem;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    box-shadow: #e7e7e7 10px 3px 10px 0px;
+    box-shadow: #e7e7e7 2px 0px 10px 2px;
     border-radius: 10px;
     background-color: #fff;
 }
-.message_avatar{
+.active{
+    border-left: 6px solid #0d9918;
+}
+.message_avatar {
+    padding: 1rem;
+    width: 15%;
     overflow: hidden;
+}
+
+.avtr_container {
     width: 50px;
     height: 50px;
-    background-color: #7c7c7c;
+    overflow: hidden;
     border-radius: 50%;
-    object-fit: cover;
 }
-.message_user_avatar{
+
+.message_user_avatar {
     width: 100%;
     height: 50px;
     object-fit: cover;
 }
-.message_header{
-    margin-left: 0.5rem;
+
+.message_header {
+    margin-left: 1rem;
     overflow: hidden;
-    padding: .5rem;
 }
-.message_header .message_sender{
+
+.message_header .message_sender {
     font-weight: 700;
-    color: #3a3939 ;
+    color: #3a3939;
     list-style-type: none;
     text-align: start;
-    width: 99%;
     height: 30px;
     overflow: hidden;
 
 }
-.message_header .sample_text{
-    width: 99%;
+
+.message_header {
+    width: 65%;
     margin-top: 1rem;
     text-align: start;
     list-style-type: none;
@@ -68,27 +82,31 @@
     overflow: hidden;
 
 }
-.time_and_counter{
-    width: 25%;
+
+.time_and_counter {
+    width: 20%;
     overflow: hidden;
 }
-.time_and_counter .time{
+
+.time_and_counter .time {
     font-size: .7rem;
     list-style-type: none;
     font-weight: 700;
     height: 30px;
-    color: rgb(78, 78, 78);
+    color: rgb(44, 44, 44);
     overflow: hidden;
 
 }
-.zone{
+
+.zone {
     font-size: .5rem;
     overflow: hidden;
 
 }
-.count{
+
+.count {
     list-style-type: none;
-    background-color: aqua;
+    background-color: #0d9918;
     width: 20px;
     height: 20px;
     margin: 1rem;
@@ -96,5 +114,6 @@
     font-size: .7rem;
     font-weight: 800;
     overflow: hidden;
+    color: #fff;
 
 }

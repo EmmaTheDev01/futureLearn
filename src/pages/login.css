@@ -13,7 +13,7 @@
     z-index: 0;
     width: 25%;
     height: 100vh;
-    background-color: #5ae4a8;
+    background-color: #8eb191;
 }
 
 .right {
@@ -35,7 +35,7 @@
     box-shadow: #b1b1b1 8px 5px 20px 4px;
 }
 .middle .logo h1{
-    color: #22ec94;
+    color: #0d9918;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -63,7 +63,7 @@
 }
 
 #login input:focus {
-    border-bottom: 2px solid #22ec94;
+    border-bottom: 2px solid #0d9918;
 }
 
 .login_btn {
@@ -72,7 +72,7 @@
     display: block;
     width: 7rem;
     padding: .6rem;
-    background-color: #22ec94;
+    background-color: #0d9918;
     color: #fff;
     border: none;
     border-radius: 16px;
@@ -92,7 +92,7 @@ label{
 }
 .link{
     text-decoration: none;
-    color: #22ec94;
+    color: #0d9918;
     margin-left: .1rem;
     margin-right: 0.2rem;
     cursor: pointer;
