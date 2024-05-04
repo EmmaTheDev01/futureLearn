@@ -1,6 +1,6 @@
 import React from 'react'
 import './content.css'
-import {FaBookBookmark, FaRegBell, FaUserGroup } from 'react-icons/fa6'
+import { FaBell, FaBookBookmark, FaUserGroup } from 'react-icons/fa6'
 import { FaUserAlt } from 'react-icons/fa'
 const FrontPageContent = () => {
     return (
@@ -10,7 +10,7 @@ const FrontPageContent = () => {
             </div>
             <div className='annoucement_box'>
 
-                <h3><span> <FaRegBell /> </span>Announcements</h3>
+                <h3><span> <FaBell /> </span>Announcements</h3>
             </div>
             <div className='post_box'>
                 <h3><span><FaBookBookmark /> </span>Posts</h3>
@@ -18,6 +18,9 @@ const FrontPageContent = () => {
             <div className='profile_box'>
 
                 <h3><sapn><FaUserAlt /> </sapn>My Profile</h3>
+            </div>
+            <div className='timeline'>
+                <h3>Timeline</h3>
             </div>
         </div>
     )

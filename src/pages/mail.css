@@ -1,0 +1,19 @@
+.mail{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    height: 100vh;
+}
+.mail_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Home_left_nav {
+    width: 20%;
+    box-sizing: border-box;
+    height: 85vh;
+    overflow: auto;
+    background-color: #363636 !important;
+}
