@@ -1,0 +1,14 @@
+.topnav{
+    padding: .6rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #363636;
+}
+.topnav li{
+    list-style-type: none;
+    float: left;
+    color: #fff;
+}

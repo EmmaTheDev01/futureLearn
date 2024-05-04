@@ -1,0 +1,40 @@
+.homepage {
+    display: block;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.Home_left_nav {
+    width: 20%;
+    box-sizing: border-box;
+    height: 85vh;
+    overflow: auto;
+    background-color: #363636;
+}
+
+.all_content {
+    width: 80%;
+    border: 1px solid #eeeeee;
+    box-sizing: border-box;
+    height: 85vh;
+    overflow: auto;
+}
+
+.footer {
+    background-color: #363636;
+    padding: .7rem;
+}
+
+.footer span {
+    color: #fff;
+    padding: .5rem;
+}
