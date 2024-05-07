@@ -16,9 +16,10 @@
 .Home_left_nav {
     width: 20%;
     box-sizing: border-box;
-    height: 85vh;
+    height: 100vh;
     overflow: auto;
     background-color: #363636;
+    z-index: 0;
 }
 
 .all_content {
@@ -31,10 +32,16 @@
 
 .footer {
     background-color: #363636;
-    padding: .7rem;
+    margin: 0;
+    height: 3rem;
+    z-index: 100;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
 
 .footer span {
     color: #fff;
-    padding: .5rem;
+    padding: 1rem;
+
 }

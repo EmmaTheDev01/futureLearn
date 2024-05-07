@@ -1,5 +1,5 @@
-.topnav{
-    padding: .6rem;
+.topnav {
+    padding: 1rem;
     margin: 0;
     width: 100%;
     display: flex;
@@ -7,8 +7,10 @@
     align-items: flex-start;
     background-color: #363636;
 }
-.topnav li{
+
+.topnav li {
     list-style-type: none;
     float: left;
     color: #fff;
+    margin-left: 1rem;
 }

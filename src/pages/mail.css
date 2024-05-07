@@ -10,10 +10,24 @@
     justify-content: center;
     align-items: center;
 }
-.Home_left_nav {
+.mail_left_nav {
     width: 20%;
     box-sizing: border-box;
-    height: 85vh;
+    height: 100vh;
     overflow: auto;
     background-color: #363636 !important;
+    z-index: 0;
+    border: none;
+}
+.mail_body{
+    width: 80%;
+    height: 100vh;
+    z-index: 0;
+}
+.mail_component{
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }

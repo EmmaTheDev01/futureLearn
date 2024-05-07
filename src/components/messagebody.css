@@ -183,6 +183,7 @@
 .emoji .emoji_picker {
     font-size: 1.2rem;
     cursor: pointer;
+    position: absolute;
 }
 
 .recorder {
@@ -210,7 +211,7 @@
 
 .picker {
     position: absolute;
-    top: 20%;
+    top: -500%;
     opacity: .9;
     left: 40%;
 }
