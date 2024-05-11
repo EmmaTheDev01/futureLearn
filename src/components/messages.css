@@ -48,6 +48,7 @@
     height: 50px;
     overflow: hidden;
     border-radius: 50%;
+    background-color: #3a3939;
 }
 
 .message_user_avatar {
