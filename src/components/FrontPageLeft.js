@@ -1,5 +1,5 @@
 import React from 'react'
-import './FrontpageLeft.css';
+import '../styles/FrontpageLeft.css';
 import { Link } from 'react-router-dom';
 const FrontPageLeft = () => {
   return (

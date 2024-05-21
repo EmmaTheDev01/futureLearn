@@ -15,7 +15,7 @@
     box-sizing: border-box;
     height: 100vh;
     overflow: auto;
-    background-color: #363636 !important;
+    background-color: #f8f0f0 !important;
     z-index: 0;
     border: none;
 }

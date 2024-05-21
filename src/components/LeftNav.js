@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import './nav.css';
+import '../styles/nav.css';
 import { FaGear, FaHouse, FaPaperPlane, FaUser, FaUserGroup } from "react-icons/fa6";
 import { BsThreeDots } from 'react-icons/bs'
 const LeftNav = () => {

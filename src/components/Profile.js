@@ -1,5 +1,5 @@
 import React from 'react'
-import './profile.css';
+import '../styles/profile.css';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 const Profile = () => {
   return (

@@ -1,0 +1,10 @@
+.notification_popup{
+    width: 400px;
+    height: 500px;
+    position: absolute;
+    background-color: #fff;
+    left: 70%;
+    top: 9%;
+    border: 14px;
+    box-shadow: #8a8888ee 7px 5px 10px 1px;
+}

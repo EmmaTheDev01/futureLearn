@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './messagebody.css';
+import '../styles/messagebody.css';
 import { BsEmojiSmile } from "react-icons/bs";
 import EmojiPicker from 'emoji-picker-react';
 

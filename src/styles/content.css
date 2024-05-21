@@ -1,0 +1,85 @@
+.boxes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.boxes .group_box {
+    width: 40%;
+    height: 400px !important;
+    overflow: auto;
+    height: auto;
+    background-color: #b2f6f8;
+    margin: .5rem;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: #eeeeee 3px 0px 40px 10px;
+}
+
+.boxes .annoucement_box {
+    width: 40%;
+    height: 400px;
+    overflow: auto;
+    background-color: #fff7dd;
+    margin: .5rem;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: #eeeeee 3px 0px 40px 10px;
+}
+
+.alerts_content {
+    text-align: start;
+    margin: 1rem;
+}
+
+.boxes .post_box {
+    width: 40%;
+    height: 400px !important;
+    height: auto;
+    background-color: #7a9b72;
+    margin: .5rem;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: #eeeeee 3px 0px 40px 10px;
+}
+
+.boxes .profile_box {
+    width: 40%;
+    height: 400px !important;
+    height: auto;
+    background-color: #b3f1da;
+    margin: .5rem;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: #eeeeee 3px 0px 40px 10px;
+}
+
+.boxes .timeline {
+    width: 95%;
+    height: auto;
+    background-color: #fff;
+    margin: .5rem;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    padding: 1rem;
+}
+
+.member_list {
+    color: #555555;
+    position: relative;
+    width: 100%;
+}
+
+.member_list .role {
+    display: inline-block;
+    font-size: .8rem;
+    color: #ffffff;
+    background-color: #0a920a;
+    width: 2.5rem;
+    border-radius: 0px 10px;
+    text-align: center;
+}

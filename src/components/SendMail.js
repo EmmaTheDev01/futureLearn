@@ -1,5 +1,5 @@
 import React from 'react'
-import './mailcomponent.css'
+import '../styles/mailcomponent.css'
 const SendMail = () => {
     return (
         <div className='send_mail'>

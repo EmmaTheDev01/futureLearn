@@ -1,0 +1,36 @@
+.topnav {
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #f8f0f0;
+}
+
+.nav_left {
+    width: 20%;
+}
+
+.nav_right {
+    width: 80%;
+}
+
+.topnav li {
+    list-style-type: none;
+    float: left;
+    color: #000;
+    margin-left: 1rem;
+}
+
+.nav_right li {
+    float: right;
+    margin-right: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: #313131;
+}
+
+.nav_right li span {
+    margin-left: 0.2rem;
+}

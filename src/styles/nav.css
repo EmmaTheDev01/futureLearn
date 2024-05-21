@@ -5,7 +5,7 @@
     height: 100vh;
     width: auto;
     overflow: hidden;
-    background-color: #363636;
+    background-color: #f8f0f0;
 }
 .top{
     display: block;
@@ -14,13 +14,14 @@
     list-style-type: none;
     padding: 1.5rem;
     text-align: start;
-    color: #ebebeb;
+    color: #494949;
     font-size: 1.4rem;
     cursor: pointer;
 }
 .top li:hover{
     background-color: #0d9918;
     width: 100%;
+    color: #fff;
 }
 .user{
     margin-bottom: 2rem;

@@ -1,8 +1,31 @@
 import React from "react";
 import TopNav from "../components/TopNav";
 import FrontpageLeft from "../components/FrontPageLeft";
-import "./group.css";
+import "../styles/group.css";
+import discussion from "../discussion";
+import groupmembers from "../groupmembers";
 const Group = () => {
+  const members = groupmembers.map(item => {
+    return (
+      <li>{item.firstname} {item.lastname} {item.role === "admin" ? <span className="group_admin">{item.role}</span> : ""} </li>
+    )
+  })
+  const discussionPost = discussion.map(item => {
+    return (
+      <div className="member_answer">
+        <div className="member_name">
+          <h4>{item.member}</h4>
+        </div>
+        <p>
+          {item.post}
+        </p>
+        <div className="discussion_actions">
+          <li>Reply</li>
+          <li>grade</li>
+        </div>
+      </div>
+    )
+  })
   return (
     <div className="my_group">
       <div className="top-nav">
@@ -27,14 +50,7 @@ const Group = () => {
             <div className="members">
               <h3>Group 1</h3>
               <ol>
-                <li>
-                  Mutesi Annet <span className="group_admin">Admin</span>
-                </li>
-                <li>Kwizera</li>
-                <li>Emille</li>
-                <li>Habumugisha</li>
-                <li>Rukundo</li>
-                <li>Patrick</li>
+                {members}
               </ol>
             </div>
             <div className="answer_form">
@@ -57,45 +73,7 @@ const Group = () => {
             <div className="discussions">
               <h3>Discussions Forum</h3>
               {/* Group Member anser */}
-              <div className="member_answer">
-                <div className="member_name">
-                  <h4>Mutesi Annet</h4>
-                </div>
-                <p>
-                  Networking is the identification, controlling, management of
-                  the interconnected devices that are communicating with each
-                  other and working together to achieve the same goal of
-                  delivering a message where it is supposed to be delivered.
-                  Components of networking includes: Cloud, Firewall, modem.
-                  server, protocol, accesspoint, router, computer, user.
-                </p>
-                <div className="discussion_actions">
-                  <li>Reply</li>
-                  <li>grade</li>
-                </div>
-              </div>
-              {/* Group Member anser */}
-              <div className="member_answer">
-                <div className="member_name">
-                  <h4>Emille</h4>
-                </div>
-                <p>
-                  Networking is the organisation, controlling, management of the
-                  interconnected devices that are communicating with each other
-                  and working together to achieve the same goal of delivering a
-                  message where it is supposed to be delivered. Components of
-                  networking includes: Cloud, Firewall, modem. server, protocol,
-                  accesspoint, router, computer, user.
-                  <br></br>
-                  <br></br>A data packet : A basic unit of information that
-                  travels from one device to another within a network. The data
-                  packet contains, packet header, packet body and packet footer
-                </p>
-                <div className="discussion_actions">
-                  <li>Reply</li>
-                  <li>grade</li>
-                </div>
-              </div>
+              {discussionPost}
             </div>
           </div>
         </div>

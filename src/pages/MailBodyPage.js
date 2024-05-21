@@ -1,7 +1,7 @@
 import React from 'react'
 import TopNav from '../components/TopNav'
 import FrontPageLeft from '../components/FrontPageLeft'
-import './mailcontent.css'
+import '../styles/mailcontent.css'
 import MailMessage from '../components/MailMessage'
 const MailBodyPage = () => {
     return (

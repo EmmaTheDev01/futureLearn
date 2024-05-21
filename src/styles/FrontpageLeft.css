@@ -8,15 +8,14 @@
     list-style-type: none;
     padding: .5rem;
     padding: 1rem;
-    color: #fff;
+    color: #313131;
     text-align: center;
     cursor: pointer;
+    font-weight: 700;
 }
-
-a .home_left_nav li {
-    text-decoration: none;
-}
-
  .home_left_nav li:hover {
     color: #0d9918;
+}
+.home_left_nav a{
+    text-decoration: none;
 }

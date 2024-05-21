@@ -2,7 +2,7 @@ import React from 'react'
 import LeftNav from '../components/LeftNav'
 import Messages from '../components/Messages'
 import Profile from '../components/Profile'
-import './dashboard.css'
+import '../styles/dashboard.css'
 import MessageBody from '../components/MessageBody'
 const Dashboard = () => {
     return (

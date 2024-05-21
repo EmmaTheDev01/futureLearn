@@ -1,5 +1,5 @@
 import React from 'react'
-import './messagebody.css'
+import '../styles/messagebody.css'
 import { MdAttachFile } from "react-icons/md";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BsThreeDots } from "react-icons/bs";

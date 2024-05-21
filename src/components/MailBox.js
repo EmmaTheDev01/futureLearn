@@ -6,9 +6,9 @@ const MailBox = (props) => {
         <div className="mail_box">
             <div className="sender_avatar"></div>
             <div className="sender_message">
-                <li className="subject">{props.subject}</li>
+                <li className="subject">{props.item.subject}</li>
                 <li className="mail_msg">
-                    {props.message}
+                    {props.item.message}
                 </li>
             </div>
             <div className="star">
