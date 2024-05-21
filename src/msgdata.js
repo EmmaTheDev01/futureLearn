@@ -2,7 +2,7 @@
 export default [
   {
     id: 1,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Emille",
     message: "Hello, How are you?",
     count: 2,
@@ -11,7 +11,7 @@ export default [
   },
   {
     id: 2,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Kwizera John",
     message: "I think we should do this in a group",
     count: 1,
@@ -20,7 +20,7 @@ export default [
   },
   {
     id: 3,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "https://media.licdn.com/dms/image/D4E03AQHr2n5ivKrvaw/profile-displayphoto-shrink_200_200/0/1690097978013?e=2147483647&v=beta&t=N5mqcDi5fGLt90Lanor0LeU8-SxK0ri4MchYZAP2aJE",
     name: "Habumugisha",
     message: "What are your thoughts on this?",
     count: 4,
@@ -29,7 +29,7 @@ export default [
   },
   {
     id: 4,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Rukundo",
     message: "Have you checked your mail box",
     count: 1,
@@ -39,7 +39,7 @@ export default [
 
   {
     id: 5,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Mutesi Annet",
     message: "Done",
     count: 1,
@@ -48,7 +48,7 @@ export default [
   },
   {
     id: 6,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Siribobo",
     message: "Idk if you're right!",
     count: 11,
@@ -57,7 +57,7 @@ export default [
   },
   {
     id: 7,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Mutoni",
     message: "I see myself using this method",
     count: 6,
@@ -66,7 +66,7 @@ export default [
   },
   {
     id: 8,
-    img: "https://encrypted-tbn0.gstatic.com/images?q:tbn:ANd9GcTTSUVGkHICq3bwbD4j36gzGi1mLQsyKGW_E3UJAm5neg&s",
+    img: "",
     name: "Tracy",
     message: "Combine them together",
     count: 1,

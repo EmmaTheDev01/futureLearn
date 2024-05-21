@@ -32,6 +32,30 @@
 .alerts_content {
     text-align: start;
     margin: 1rem;
+    cursor: pointer;
+}
+
+.alert_message {
+    text-align: start;
+    margin: 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.alert_message p {
+    height: 2rem;
+    overflow: hidden;
+    font-size: .8rem;
+    color: #555555;
+}
+
+.alert_message:hover {
+    background-color: #eeeeee;
+}
+
+.alert_message h4 {
+    color: #7a9b72;
+    height: 0.5rem;
 }
 
 .boxes .post_box {

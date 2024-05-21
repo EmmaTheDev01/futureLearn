@@ -4,10 +4,11 @@ import '../styles/notifications.css'
 const Alerts = () => {
   const allAlerts = announcements.map((alert) => {
     return (
-      <div className="alerts_content">
+      <div className="alert_message">
         <h4>{alert.title}</h4>
         <p>{alert.description}</p>
-        <h6>{alert.announcer}</h6>
+        <h6>By: {alert.announcer}</h6>
+        <hr></hr>
       </div>
     );
   });

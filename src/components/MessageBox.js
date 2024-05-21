@@ -8,7 +8,11 @@ const MessageBox = (props) => {
           <img
             className="message_user_avatar"
             alt="avatar image1"
-            src={props.item.img}
+            src={
+              props.item.img
+                ? props.item.img
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
+            }
           ></img>
         </div>
       </div>

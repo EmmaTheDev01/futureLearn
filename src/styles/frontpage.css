@@ -4,6 +4,7 @@
     margin: 0;
     height: 100vh;
     overflow: hidden;
+
 }
 
 .content {
@@ -28,6 +29,9 @@
     box-sizing: border-box;
     height: 85vh;
     overflow: auto;
+}
+.all_content::-webkit-scrollbar{
+    width: 5px;
 }
 
 .footer {
