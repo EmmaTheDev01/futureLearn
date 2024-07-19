@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/mailcomponent.css";
-import maildata from "../maildata";
+import maildata from "../data/maildata";
 import MailBox from "./MailBox";
 const AllMail = () => {
   const mailboxdata = maildata.map((item) => {

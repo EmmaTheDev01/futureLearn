@@ -1,10 +1,29 @@
 import React from "react";
 import "../styles/content.css";
-import groupmembers from "../groupmembers";
+import groupmembers from "../data/groupmembers";
 import { FaBell, FaBookBookmark, FaUserGroup } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
-import announcements from "../announcements";
+import announcements from "../data/announcements";
+import axios from "axios";
+
 const FrontPageContent = () => {
+
+    const getProfile = async () => {
+        try{
+            const response = await axios.get("http://localhost:4000/api/v1/auth/profile",
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            console.log('Profile data fetched successfully')
+            console.log(response.data.data);
+
+        }catch(error){
+            console.log('Unable to get profile data')
+            console.log(error.response.error);
+        }
+    }
     const mygroup = groupmembers.map((item) => {
         return (
             <li className="member_list">

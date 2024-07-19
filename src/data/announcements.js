@@ -1,4 +1,4 @@
-import assignments from "./assignments";
+import assignments from "../data/assignments";
 const newAssignment = assignments.map(item => {
     return (
         item.lecturer

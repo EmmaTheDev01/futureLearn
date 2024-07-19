@@ -1,5 +1,5 @@
 import React from "react";
-import announcements from "../announcements";
+import announcements from "../data/announcements";
 import '../styles/notifications.css'
 const Alerts = () => {
   const allAlerts = announcements.map((alert) => {

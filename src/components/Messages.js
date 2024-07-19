@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/messages.css";
 import MessageBox from "./MessageBox";
-import msgdata from "../msgdata";
+import msgdata from "../data/msgdata";
 const Messages = () => {
     const messagesArray = msgdata.map((item) => {
         return (
