@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/mailcomponent.css";
 import maildata from "../data/maildata";
 import MailBox from "./MailBox";
+
 const AllMail = () => {
   const mailboxdata = maildata.map((item) => {
     return (
@@ -12,14 +12,14 @@ const AllMail = () => {
       />
     );
   });
-  return (
-    <div className="all_mail">
-      <h3>Inbox (3)</h3>
-      {/* Box containing mail message */}
 
-      <Link className="mail_box_link" to="/mymail">
+  return (
+    <div className="bg-slate-700 p-2 md:p-2 lg:p-2 h-full overflow-auto scrollbar-hidden">
+      <h3 className="text-2xl font-bold text-gray-200 mb-4 text-start">Inbox ({maildata.length})</h3>
+      {/* Box containing mail message */}
+      <div className="space-y-4 w-full">
         {mailboxdata}
-      </Link>
+      </div>
     </div>
   );
 };
