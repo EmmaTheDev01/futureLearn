@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import { useContext } from 'react';
 
 const Home = () => {
+    const { login } = useContext(AuthContext); // Get login function from AuthContext
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,13 +20,14 @@ const Home = () => {
                 password
             });
             
-            // Handle successful login (e.g., redirect)
+            // Handle successful login
             console.log('Login successful:', response.data.data);
             localStorage.setItem('token', response.data.token);
-            navigate('/home');
+            localStorage.setItem('role', response.data.role); // Ensure role is stored
+            login(response.data.token, response.data.role); // Call the login method from context
+            navigate('/home'); // Navigate to the home page
             
         } catch (error) {
-            // Handle error (e.g., display error message)
             console.error('Login error:', error.response);
         }
     };

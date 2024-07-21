@@ -1,48 +1,43 @@
 import React, { createContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie'; // Import js-cookie for cookie management
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true); // Initially set loading to true
-  const [isAdmin, setIsAdmin] = useState(false); // State to track admin status
-  
-  // Function to check initial authentication status
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const checkAuthStatus = () => {
-    const token = Cookies.get('token') || localStorage.getItem('token'); // Check if token exists in cookies or localStorage
-    const role = localStorage.getItem('role'); // Get role from localStorage
+    const token = Cookies.get('token') || localStorage.getItem('token');
+    const role = localStorage.getItem('role');
 
     if (token) {
       setIsLoggedIn(true);
-      setIsAdmin(role === 'admin'); // Check if user is admin
+      setIsAdmin(role === 'admin');
     } else {
       setIsLoggedIn(false);
       setIsAdmin(false);
     }
-    setLoading(false); // Once checked, set loading to false
+    setLoading(false); // Ensure loading is set to false after checking auth status
   };
 
-  // Function to log in the user
   const login = (token, role) => {
     setIsLoggedIn(true);
-    localStorage.setItem('token', token); // Set token in localStorage
-    localStorage.setItem('role', role); // Set role in localStorage
-    Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'Strict' }); // Set token in cookies
-
-    setIsAdmin(role === 'admin'); // Set isAdmin state
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', role);
+    Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'Strict' });
+    setIsAdmin(role === 'admin');
   };
 
-  // Function to log out the user
   const logout = () => {
-    Cookies.remove('token'); 
-    localStorage.removeItem('token'); 
-    localStorage.removeItem('role'); 
+    Cookies.remove('token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
     setIsLoggedIn(false);
     setIsAdmin(false);
   };
 
-  // Call checkAuthStatus on component mount to initialize authentication check
   useEffect(() => {
     checkAuthStatus();
   }, []);
