@@ -5,13 +5,13 @@ import FrontPageContent from "../components/FrontPageContent";
 
 const FrontPage = () => {
   return (
-    <div className=" bg-slate-700 min-h-screen flex flex-col">
+    <div className="bg-slate-700 min-h-screen flex flex-col">
       <TopNav className="top-nav" />
-      <div className=" flex flex-1 flex-col md:flex-row">
-        <div className="Home_left_nav bg-slate-800 p-4 md:w-32">
+      <div className="flex flex-1">
+        <div className="bg-slate-900 p-4 w-32 md:w-36 lg:w-40 xl:w-48">
           <FrontPageLeft />
         </div>
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-4 overflow-auto">
           <FrontPageContent />
         </div>
       </div>

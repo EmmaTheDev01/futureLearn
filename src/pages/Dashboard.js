@@ -12,10 +12,10 @@ const Dashboard = () => {
         <LeftNav />
       </div>
       <div className='flex-grow flex'>
-        <div className='w-1/4 border-r border-gray-600 overflow-auto scrollbar-hidden'>
+        <div className='w-1/4 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
           <Messages />
         </div>
-        <div className='flex-1 border-r border-gray-600 overflow-auto scrollbar-hidden'>
+        <div className='flex-1 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
           <MessageBody />
         </div>
         <div className='w-1/4 overflow-auto scrollbar-hidden'>

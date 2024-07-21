@@ -5,7 +5,7 @@ import announcements from "../data/announcements";
 
 // Example SVG icons with backgrounds (replace with your own or import from separate files)
 const HeartIcon = () => (
-  <div className="bg-red-600 p-2 rounded-full">
+  <div className="bg-red-600 p-2 rounded-full shadow-lg">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-8 w-8 text-white"
@@ -24,7 +24,7 @@ const HeartIcon = () => (
 );
 
 const TeamIcon = () => (
-  <div className="bg-green-600 p-2 rounded-full">
+  <div className="bg-green-600 p-2 rounded-full shadow-lg">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-8 w-8 text-white"
@@ -43,7 +43,7 @@ const TeamIcon = () => (
 );
 
 const ProfileIcon = () => (
-  <div className="bg-indigo-600 p-2 rounded-full">
+  <div className="bg-indigo-600 p-2 rounded-full shadow-lg">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-8 w-8 text-white"
@@ -68,7 +68,7 @@ const ProfileIcon = () => (
 );
 
 const BellIcon = () => (
-  <div className="bg-yellow-600 p-2 rounded-full">
+  <div className="bg-yellow-600 p-2 rounded-full shadow-lg">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-8 w-8 text-white"
@@ -93,7 +93,7 @@ const BellIcon = () => (
 );
 
 const ClockIcon = () => (
-  <div className="bg-purple-600 p-2 rounded-full">
+  <div className="bg-purple-600 p-2 rounded-full shadow-lg">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-8 w-8 text-white"
@@ -135,12 +135,12 @@ const FrontPageContent = () => {
     <div className="bg-slate-700 min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
-          <div className="bg-slate-300 rounded-lg p-4 shadow-md">
-            <h3 className="flex items-center mb-4 text-lg font-bold text-gray-800">
+          <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
+            <h3 className="flex items-center mb-4 text-xl font-semibold text-teal-700 border-b-2 border-teal-500 pb-2">
               <TeamIcon />
-              My Group
+              <span className="ml-2">My Group</span>
             </h3>
-            <div className="overflow-y-auto max-h-60">
+            <div className="overflow-y-auto max-h-60 scrollbar-hidden">
               <ul className="divide-y divide-gray-200">
                 {groupmembers.map((item, index) => (
                   <li key={index} className="py-2">
@@ -156,31 +156,31 @@ const FrontPageContent = () => {
               {groupmembers.length} Members in this group
             </p>
           </div>
-          <div className="bg-slate-300 rounded-lg p-4 shadow-md">
-            <h3 className="flex items-center mb-4 text-lg font-bold text-gray-800">
+          <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
+            <h3 className="flex items-center mb-4 text-xl font-semibold text-yellow-600 border-b-2 border-yellow-400 pb-2">
               <BellIcon />
-              Announcements ({announcements.length})
+              <span className="ml-2">Announcements ({announcements.length})</span>
             </h3>
             <div className="overflow-y-auto max-h-60">
               {announcements.map((alert, index) => (
                 <div key={index} className="py-2">
-                  <h4 className="text-lg font-bold text-gray-800">{alert.title}</h4>
+                  <h4 className="text-lg font-semibold text-gray-800">{alert.title}</h4>
                   <h6 className="text-gray-500">{alert.announcer}</h6>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-slate-300 rounded-lg p-4 shadow-md">
-            <h3 className="flex items-center mb-4 text-lg font-bold text-gray-800">
+          <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
+            <h3 className="flex items-center mb-4 text-xl font-semibold text-red-600 border-b-2 border-red-400 pb-2">
               <HeartIcon />
-              Posts
+              <span className="ml-2">Posts</span>
             </h3>
             {/* Add your posts content here */}
           </div>
-          <div className="bg-slate-300 rounded-lg p-4 shadow-md">
-            <h3 className="flex items-center mb-4 text-lg font-bold text-gray-800">
+          <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
+            <h3 className="flex items-center mb-4 text-xl font-semibold text-indigo-600 border-b-2 border-indigo-400 pb-2">
               <ProfileIcon />
-              My Profile
+              <span className="ml-2">My Profile</span>
             </h3>
             <div className="text-center">
               {profileData ? (
@@ -195,10 +195,10 @@ const FrontPageContent = () => {
             </div>
           </div>
         </div>
-        <div className="bg-slate-300 rounded-lg p-4 shadow-md mt-6">
-          <h3 className="flex items-center mb-4 text-lg font-bold text-gray-800">
+        <div className="bg-slate-300 rounded-lg p-6 shadow-lg mt-6">
+          <h3 className="flex items-center mb-4 text-xl font-semibold text-purple-600 border-b-2 border-purple-400 pb-2">
             <ClockIcon />
-            Timeline
+            <span className="ml-2">Timeline</span>
           </h3>
           {/* Add your timeline content here */}
         </div>
