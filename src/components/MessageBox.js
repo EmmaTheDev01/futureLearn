@@ -2,32 +2,29 @@ import React from "react";
 
 const MessageBox = (props) => {
   return (
-    <div className="notification_box">
-      <div className="message_avatar">
-        <div className="avtr_container">
-          <img
-            className="message_user_avatar"
-            alt="avatar image1"
-            src={
-              props.item.img
-                ? props.item.img
-                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
-            }
-          ></img>
+    <div className="flex items-center p-4 shadow-md">
+      <div className="flex-shrink-0 mr-4">
+        <img
+          className="w-12 h-12 rounded-full object-cover"
+          alt="avatar"
+          src={
+            props.item.img
+              ? props.item.img
+              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
+          }
+        />
+      </div>
+      <div className="flex-1">
+        <div className="flex justify-between items-center mb-1">
+          <span className="font-semibold text-gray-100">{props.item.name}</span>
+          <div className="flex items-center">
+            <span className="text-sm text-gray-400 mr-2">{props.item.time} <span className="text-gray-500">{props.item.zone}</span></span>
+            <span className="inline-flex items-center justify-center w-6 h-6 text-sm font-medium text-white bg-green-800 rounded-full">
+              {props.item.count < 10 ? props.item.count : "9+"}
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="message_header">
-        <li className="message_sender">{props.item.name}</li>
-        <li className="sample_text">{props.item.message}</li>
-      </div>
-      <div className="time_and_counter">
-        <li className="time">
-          {props.item.time}
-          <span className="zone">{props.item.zone}</span>
-        </li>
-        <li className="count">
-          {props.item.count < 10 ? props.item.count : "9+"}
-        </li>
+        <p className="text-gray-300 mb-2 text-start">{props.item.message}</p>
       </div>
     </div>
   );

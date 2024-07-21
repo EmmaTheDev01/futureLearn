@@ -1,21 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import '../styles/nav.css';
-import { FaGear, FaHouse, FaPaperPlane, FaUser, FaUserGroup } from "react-icons/fa6";
-import { BsThreeDots } from 'react-icons/bs'
+// src/components/LeftNav.jsx
+
+import React from 'react';
+import { MdChat, MdNotifications, MdGroup, MdPerson, MdCalendarToday } from 'react-icons/md';
+
 const LeftNav = () => {
   return (
-    <div className='nav'>
-      <div className='top'>
-        <li className='user'><FaUser /></li>
-        <Link to='/home'><li><FaHouse /></li></Link>
-        <li><FaPaperPlane /></li>
-        <Link to='/my-group'><li><FaUserGroup /></li></Link>
-        <li><BsThreeDots /></li>
-        <li className='settings'><FaGear /></li>
-      </div>
+    <div className="flex flex-col items-center justify-center h-full bg-gray-800 text-white space-y-4">
+      <button className="p-2 hover:bg-gray-700 rounded-full">
+        <MdChat className="text-2xl" />
+      </button>
+      <button className="p-2 hover:bg-gray-700 rounded-full">
+        <MdNotifications className="text-2xl" />
+      </button>
+      <button className="p-2 hover:bg-gray-700 rounded-full">
+        <MdGroup className="text-2xl" />
+      </button>
+      <button className="p-2 hover:bg-gray-700 rounded-full">
+        <MdPerson className="text-2xl" />
+      </button>
+      <button className="p-2 hover:bg-gray-700 rounded-full">
+        <MdCalendarToday className="text-2xl" />
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default LeftNav
+export default LeftNav;

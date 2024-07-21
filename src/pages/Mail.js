@@ -1,7 +1,6 @@
 import React from 'react'
 import TopNav from '../components/TopNav'
 import FrontPageLeft from '../components/FrontPageLeft'
-import '../styles/mail.css'
 import AllMail from '../components/AllMail'
 import SendMail from '../components/SendMail'
 const Mail = () => {

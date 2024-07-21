@@ -1,17 +1,17 @@
 import React from "react";
 import TopNav from "../components/TopNav";
-import "../styles/frontpage.css";
 import FrontPageLeft from "../components/FrontPageLeft";
 import FrontPageContent from "../components/FrontPageContent";
+
 const FrontPage = () => {
   return (
-    <div className="homepage">
-      <TopNav />
-      <div className="content">
-        <div className="Home_left_nav">
+    <div className=" bg-slate-700 min-h-screen flex flex-col">
+      <TopNav className="top-nav" />
+      <div className=" flex flex-1 flex-col md:flex-row">
+        <div className="Home_left_nav bg-slate-800 p-4 md:w-32">
           <FrontPageLeft />
         </div>
-        <div className="all_content">
+        <div className="flex-1 p-4">
           <FrontPageContent />
         </div>
       </div>

@@ -18,12 +18,13 @@ const Home = () => {
             });
             
             // Handle successful login (e.g., redirect)
-            console.log('Login successful:', response.data);
+            console.log('Login successful:', response.data.data);
+            localStorage.setItem('token', response.data.token);
             navigate('/home');
             
         } catch (error) {
             // Handle error (e.g., display error message)
-            console.error('Login error:', error.response.data.error);
+            console.error('Login error:', error.response);
         }
     };
 

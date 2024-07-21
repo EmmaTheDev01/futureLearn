@@ -1,7 +1,6 @@
 import React from "react";
 import TopNav from "../components/TopNav";
 import FrontpageLeft from "../components/FrontPageLeft";
-import "../styles/group.css";
 import discussion from "../data/discussion";
 import groupmembers from "../data/groupmembers";
 const Group = () => {
