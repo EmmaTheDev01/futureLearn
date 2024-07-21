@@ -1,10 +1,28 @@
-import React from "react";
+import React,{useContext, useEffect} from "react";
 import TopNav from "../components/TopNav";
 import FrontpageLeft from "../components/FrontPageLeft";
 import discussion from "../data/discussion";
 import groupmembers from "../data/groupmembers";
-
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Group = () => {
+  
+  const [isLoggedIn, loading] = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !isLoggedIn) {
+      navigate('/login');
+    }
+  }, [isLoggedIn, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className='flex h-screen bg-slate-700 items-center justify-center'>
+        <p className='text-gray-300'>Loading...</p>
+      </div>
+    );
+  }
   const members = groupmembers.map(item => {
     return (
       <li key={item.firstname + item.lastname} className="flex items-center space-x-2 py-2">

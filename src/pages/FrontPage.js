@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import TopNav from "../components/TopNav";
 import FrontPageLeft from "../components/FrontPageLeft";
 import FrontPageContent from "../components/FrontPageContent";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const FrontPage = () => {
+  const { isLoggedIn, loading } = useContext(AuthContext); // Fix here
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !isLoggedIn) {
+      navigate('/login');
+    }
+  }, [isLoggedIn, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className='flex h-screen bg-slate-700 items-center justify-center'>
+        <p className='text-gray-300'>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-slate-700 min-h-screen flex flex-col">
       <TopNav className="top-nav" />

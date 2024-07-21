@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/messages.css";
 import MessageBox from "./MessageBox";
 import msgdata from "../data/msgdata";
 

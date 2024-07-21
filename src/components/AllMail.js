@@ -17,9 +17,11 @@ const AllMail = () => {
     <div className="bg-slate-700 p-2 md:p-2 lg:p-2 h-full overflow-auto scrollbar-hidden">
       <h3 className="text-2xl font-bold text-gray-200 mb-4 text-start">Inbox ({maildata.length})</h3>
       {/* Box containing mail message */}
+      <Link to='/mymail'>
       <div className="space-y-4 w-full">
         {mailboxdata}
       </div>
+      </Link>
     </div>
   );
 };

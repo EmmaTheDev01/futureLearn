@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../styles/login.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -29,39 +29,44 @@ const Home = () => {
     };
 
     return (
-        <div>
-            <div className='login'>
-                <div className='left'> </div>
-                <div className='middle'>
-                    <div className='logo'>
-                        <h1>Login</h1>
-                    </div>
-                    <form id='login' onSubmit={handleSubmit}>
-                        <input
-                            className='email'
-                            name='email'
-                            type='email'
-                            placeholder='Enter your email address'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <input
-                            className='password'
-                            name='password'
-                            type='password'
-                            placeholder='Enter your password'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <button className='login_btn' type='submit'>Login</button>
-                    </form>
-                    <label>
-                        Don't have an account? <Link className='link' to="/new-account"> Register</Link> here
-                    </label>
+        <div className="flex min-h-screen bg-gray-900 items-center justify-center p-4 sm:p-6 md:p-8">
+            <div className="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div className="text-center mb-6">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-100">Login</h1>
                 </div>
-                <div className='right'></div>
+                <form id='login' onSubmit={handleSubmit} className="space-y-4">
+                    <input
+                        className="w-full p-3 bg-gray-700 text-gray-200 border border-gray-600 rounded-md focus:border-green-500 focus:outline-none"
+                        name='email'
+                        type='email'
+                        placeholder='Enter your email address'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        className="w-full p-3 bg-gray-700 text-gray-200 border border-gray-600 rounded-md focus:border-green-500 focus:outline-none"
+                        name='password'
+                        type='password'
+                        placeholder='Enter your password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button
+                        className="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-200 ease-in-out"
+                        type='submit'
+                    >
+                        Login
+                    </button>
+                </form>
+                <div className="mt-4 text-center text-gray-300">
+                    <span>Don't have an account? </span>
+                    <Link className="text-green-400 hover:text-green-300 font-semibold" to="/new-account">
+                        Register
+                    </Link>
+                    <span> here</span>
+                </div>
             </div>
         </div>
     );

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const LeftNav = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-gray-800 text-white space-y-4">
+    <div className="flex flex-col w-full items-center justify-center h-full bg-gray-800 text-white space-y-4">
       <Link to='/home'>
         <button className="p-2 hover:bg-gray-700 rounded-full">
           <MdHome className="text-2xl" />
