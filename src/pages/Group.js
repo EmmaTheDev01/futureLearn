@@ -1,13 +1,14 @@
-import React,{useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import TopNav from "../components/TopNav";
 import FrontpageLeft from "../components/FrontPageLeft";
 import discussion from "../data/discussion";
 import groupmembers from "../data/groupmembers";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+
 const Group = () => {
-  
-  const [isLoggedIn, loading] = useContext(AuthContext);
+  // Destructure properties from the AuthContext object
+  const { isLoggedIn, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,29 +24,30 @@ const Group = () => {
       </div>
     );
   }
-  const members = groupmembers.map(item => {
-    return (
-      <li key={item.firstname + item.lastname} className="flex items-center space-x-2 py-2">
-        <span>{item.firstname} {item.lastname}</span>
-        {item.role === "admin" && <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Admin</span>}
-      </li>
-    )
-  });
 
-  const discussionPost = discussion.map(item => {
-    return (
-      <div key={item.member} className="bg-gray-800 p-4 rounded-lg mb-4 shadow-md">
-        <div className="mb-2">
-          <h4 className="text-lg font-semibold text-gray-100">{item.member}</h4>
-        </div>
-        <p className="text-gray-300 mb-2">{item.post}</p>
-        <div className="flex space-x-4 text-blue-400">
-          <button className="hover:text-blue-500">Reply</button>
-          <button className="hover:text-blue-500">Grade</button>
-        </div>
+  // Render group members
+  const members = groupmembers.map(item => (
+    <li key={item.firstname + item.lastname} className="flex items-center space-x-2 py-2">
+      <span>{item.firstname} {item.lastname}</span>
+      {item.role === "admin" && (
+        <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Admin</span>
+      )}
+    </li>
+  ));
+
+  // Render discussion posts
+  const discussionPost = discussion.map(item => (
+    <div key={item.member} className="bg-gray-800 p-4 rounded-lg mb-4 shadow-md">
+      <div className="mb-2">
+        <h4 className="text-lg font-semibold text-gray-100">{item.member}</h4>
       </div>
-    )
-  });
+      <p className="text-gray-300 mb-2">{item.post}</p>
+      <div className="flex space-x-4 text-blue-400">
+        <button className="hover:text-blue-500">Reply</button>
+        <button className="hover:text-blue-500">Grade</button>
+      </div>
+    </div>
+  ));
 
   return (
     <div className="bg-slate-900 min-h-screen">

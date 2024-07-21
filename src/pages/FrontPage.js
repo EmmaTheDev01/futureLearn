@@ -4,6 +4,7 @@ import FrontPageLeft from "../components/FrontPageLeft";
 import FrontPageContent from "../components/FrontPageContent";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import ChatBot from "../components/ChatBot";
 
 const FrontPage = () => {
   const { isLoggedIn, loading } = useContext(AuthContext); // Fix here
@@ -32,6 +33,9 @@ const FrontPage = () => {
         </div>
         <div className="flex-1 p-4 overflow-auto">
           <FrontPageContent />
+        </div>
+        <div className="">
+          <ChatBot/>
         </div>
       </div>
     </div>
