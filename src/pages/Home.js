@@ -24,7 +24,8 @@ const Home = () => {
             console.log('Login successful:', response.data.data);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem("loggedInUserId", response.data.data._id);
-            localStorage.setItem('role', response.data.role); // Ensure role is stored
+            localStorage.setItem('role', response.data.role);
+             // Ensure role is stored
             login(response.data.token, response.data.role); // Call the login method from context
             navigate('/home'); // Navigate to the home page
             

@@ -16,6 +16,10 @@ const Chat = () => {
   const [error, setError] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
+  const [message, setMessage] = useState('');
+  const [conversationId, setConversationId] = useState(null);
+
+  const loggedInUserId = localStorage.getItem("loggedInUserId");
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -26,7 +30,6 @@ const Chat = () => {
         });
 
         if (Array.isArray(response.data) && response.data.length === 0) {
-          // Fetch users if no conversations
           const usersResponse = await axios.get("http://localhost:4000/api/v1/user", {
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -47,8 +50,10 @@ const Chat = () => {
   const handleConversationClick = async (conversationId) => {
     try {
       const token = localStorage.getItem("token");
-      
-      // Fetch conversation details
+      if (!token) {
+        throw new Error("Token is missing from local storage.");
+      }
+
       const response = await axios.get(`http://localhost:4000/api/v1/chat/conversation/${conversationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -56,22 +61,76 @@ const Chat = () => {
       const conversationData = response.data;
       console.log('Conversation Data:', conversationData);
 
-      // Set the selected conversation
-      setSelectedConversation(conversationData);
+      if (conversationData) {
+        setSelectedConversation(conversationData);
+        setConversationId(conversationId);
 
-      // Fetch user details for the second participant if needed
-      if (Array.isArray(conversationData.participants) && conversationData.participants.length > 1) {
-        const participantId = conversationData.participants[1]._id;
-        
-        // Fetch user details for participant 2
-        const userResponse = await axios.get(`http://localhost:4000/api/v1/user/${participantId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        if (Array.isArray(conversationData.participants) && conversationData.participants.length > 1) {
+          const participantId = conversationData.participants[1]._id;
+          const userResponse = await axios.get(`http://localhost:4000/api/v1/user/${participantId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
-        setUserDetails(userResponse.data.data);
+          setUserDetails(userResponse.data.data);
+        }
+      } else {
+        throw new Error('Conversation data is undefined or null.');
       }
     } catch (err) {
       console.error('Error fetching conversation or user details:', err.message);
+      setError(err.message);
+    }
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!message.trim() || !conversationId) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!loggedInUserId) {
+        throw new Error("User ID is missing from local storage.");
+      }
+
+      const response = await axios.post(
+        `http://localhost:4000/api/v1/chat/message/${conversationId}`,
+        { senderId: loggedInUserId, content: message },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const updatedConversation = response.data;
+      setSelectedConversation(updatedConversation);
+      setMessage('');
+    } catch (err) {
+      console.error('Error sending message:', err.message);
+      setError(err.message);
+    }
+  };
+
+  const handleStartConversation = async (userId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const loggedInUserId = localStorage.getItem("loggedInUserId");
+
+      if (!loggedInUserId || !userId) {
+        throw new Error("User ID is missing.");
+      }
+
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/chat/start",
+        { participants: [loggedInUserId, userId] },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const newConversation = response.data;
+
+      setConversations([newConversation, ...conversations]);
+      setSelectedConversation(newConversation);
+      setConversationId(newConversation._id);
+      setUsers([]);
+    } catch (err) {
+      console.error('Error starting conversation:', err.message);
       setError(err.message);
     }
   };
@@ -81,34 +140,30 @@ const Chat = () => {
 
   return (
     <div className='flex h-screen w-full bg-slate-700'>
-      {/* Left Navigation */}
       <div className='w-1/16 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
         <LeftNav />
       </div>
 
-      {/* Main Content */}
       <div className='flex-grow flex'>
-        {/* Messages Section */}
         <div className='hidden md:block md:w-1/4 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
           <div className="flex-1 p-4">
             {(conversations.length > 0 ? conversations : users).map((item) => (
               <MessageBox
                 key={item._id}
-                name={item.participants[1] ? item.participants[1].username : item.username}
+                name={item.participants ? item.participants[1]?.username : item.username}
                 img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
-                time={item.messages && item.messages.length > 0 ? new Date(item.messages[0]?.timestamp).toLocaleTimeString() : ""}
-                zone={item.messages && item.messages.length > 1 ? new Date(item.messages[1]?.timestamp).toLocaleDateString() : ""}
+                time={item.messages && item.messages.length > 0 ? new Date(item.messages[item.messages.length - 1]?.timestamp).toLocaleTimeString() : ""}
+                zone=""
                 count={item.messages ? item.messages.length : 0}
-                message={item.messages && item.messages.length > 1 ? item.messages[1]?.content : "Start messaging"}
+                message={item.messages && item.messages.length > 0 ? item.messages[item.messages.length - 1]?.content : "Start messaging"}
                 onClick={() => handleConversationClick(item._id)}
+                onCreateConversation={() => handleStartConversation(item._id)}
               />
             ))}
           </div>
         </div>
 
-        {/* Message Body Section */}
         <div className="flex flex-col h-full w-2/4 bg-gray-900 text-gray-100">
-          {/* Navigation */}
           <div className="flex items-center p-4 bg-gray-800 border-b border-gray-700">
             <div className="flex-shrink-0 mr-4">
               <img
@@ -138,12 +193,11 @@ const Chat = () => {
             </div>
           </div>
 
-          {/* Conversations */}
           <div className="flex-1 p-4 overflow-y-auto scrollbar-hidden">
             <div className="space-y-4">
               {selectedConversation && selectedConversation.messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'} mb-2`}>
-                  <div className={`p-2 rounded ${msg.sender === 'me' ? 'bg-blue-500 text-white' : 'bg-gray-600 text-gray-100'}`}>
+                <div key={index} className={`flex ${msg.sender._id === loggedInUserId ? 'justify-end' : 'justify-start'} mb-2`}>
+                  <div className={`p-2 rounded ${msg.sender._id === loggedInUserId ? 'bg-green-700 text-white' : 'bg-gray-600 text-gray-100'}`}>
                     {msg.content}
                   </div>
                 </div>
@@ -151,9 +205,8 @@ const Chat = () => {
             </div>
           </div>
 
-          {/* Input Field */}
           <div className="p-4 bg-gray-800 border-t border-gray-700">
-            <form className="flex items-center space-x-2">
+            <form className="flex items-center space-x-2" onSubmit={handleSendMessage}>
               <label className="flex-shrink-0 cursor-pointer text-gray-400 hover:text-green-400">
                 <MdAttachFile className="text-xl" />
                 <input type="file" id="myFile" name="filename" className="hidden" />
@@ -163,21 +216,21 @@ const Chat = () => {
                 className='flex-1 p-2 bg-gray-700 border border-gray-600 rounded-full placeholder-gray-400 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                 name='msg'
                 placeholder='Enter your message'
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               />
               <EmojiPickerToggle />
               <AudioRecorderComponent />
-              <button className="text-gray-400 hover:text-green-400">
+              <button className="text-gray-400 hover:text-green-400" type="submit">
                 <RiSendPlaneFill className="text-xl" />
               </button>
             </form>
           </div>
         </div>
 
-        {/* Right Sidebar */}
         <div className="bg-slate-700 w-1/4 z-0 h-[100vh] overflow-hidden text-gray-100 rounded-lg shadow-lg max-w-md mx-auto p-6 space-y-6">
           {userDetails ? (
             <>
-              {/* Avatar and About User */}
               <div className="flex flex-col items-center">
                 <img
                   src={userDetails.img || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"}
@@ -189,7 +242,6 @@ const Chat = () => {
                 <p className='text-gray-400 text-sm'>{userDetails.regNo}</p>
                 <h6 className='text-gray-400'>{userDetails.phone}</h6>
               </div>
-              {/* Add additional user details here */}
             </>
           ) : (
             <p>No user selected</p>
