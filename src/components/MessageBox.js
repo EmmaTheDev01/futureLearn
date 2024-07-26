@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 
-const MessageBox = ({ img, name, time, zone, count, message }) => {
+const MessageBox = ({ img, name, time, zone, count, message, onClick }) => {
   return (
-    <div className="flex w-full items-center p-4 shadow-md hover:bg-green-700 hover:rounded-md cursor-pointer">
+    <div
+      className="flex w-full items-center p-4 shadow-md hover:bg-green-700 hover:rounded-md cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex-shrink-0 mr-4">
         <img
           className="w-12 h-12 rounded-full object-cover"
@@ -31,70 +33,4 @@ const MessageBox = ({ img, name, time, zone, count, message }) => {
   );
 };
 
-const Messages = () => {
-  const [conversations, setConversations] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchConversations = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:4000/api/v1/chat/my-conversations", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (Array.isArray(response.data) && response.data.length === 0) {
-          // No conversations, fetch users
-          const usersResponse = await axios.get("http://localhost:4000/api/v1/user", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (Array.isArray(usersResponse.data)) {
-            setUsers(usersResponse.data.data);
-          } else {
-            setUsers([]);
-          }
-        } else {
-          setConversations(response.data);
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchConversations();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  // Render conversations if available, otherwise render users
-  const displayItems = conversations.length > 0 ? conversations : users;
-
-  return (
-    <div>
-      {displayItems.map((item) => (
-        <MessageBox
-          key={item._id}
-          name={conversations.length > 0 
-            ? item.participants.map(participant => participant.username).join(', ') 
-            : item.username}
-          img={item.img || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"} // Default avatar
-          time={conversations.length > 0 
-            ? new Date(item.messages[0]?.timestamp).toLocaleTimeString() 
-            : ""}
-          zone={conversations.length > 0 
-            ? new Date(item.messages[0]?.timestamp).toLocaleDateString() 
-            : ""}
-          count={conversations.length > 0 ? item.messages.length : 0}
-          message={conversations.length > 0 ? item.messages[0]?.content : ""}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default Messages;
+export default MessageBox;
