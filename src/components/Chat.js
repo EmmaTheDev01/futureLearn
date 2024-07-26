@@ -29,13 +29,15 @@ const Chat = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (Array.isArray(response.data) && response.data.length === 0) {
-          const usersResponse = await axios.get("http://localhost:4000/api/v1/user", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setUsers(usersResponse.data || []);
-        } else {
-          setConversations(response.data || []);
+        if (Array.isArray(response.data)) {
+          if (response.data.length === 0) {
+            const usersResponse = await axios.get("http://localhost:4000/api/v1/user", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            setUsers(usersResponse.data.data || []);
+          } else {
+            setConversations(response.data || []);
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -47,26 +49,30 @@ const Chat = () => {
     fetchConversations();
   }, []);
 
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
   const handleConversationClick = async (conversationId) => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("Token is missing from local storage.");
-      }
+      if (!token) throw new Error("Token is missing from local storage.");
 
       const response = await axios.get(`http://localhost:4000/api/v1/chat/conversation/${conversationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const conversationData = response.data;
-      console.log('Conversation Data:', conversationData);
 
       if (conversationData) {
         setSelectedConversation(conversationData);
         setConversationId(conversationId);
 
         if (Array.isArray(conversationData.participants) && conversationData.participants.length > 1) {
-          const participantId = conversationData.participants[1]._id;
+          const participantId = conversationData.participants.find(participant => participant._id !== loggedInUserId)._id;
           const userResponse = await axios.get(`http://localhost:4000/api/v1/user/${participantId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -125,13 +131,27 @@ const Chat = () => {
 
       const newConversation = response.data;
 
-      setConversations([newConversation, ...conversations]);
+      setConversations(prevConversations => [newConversation, ...prevConversations]);
       setSelectedConversation(newConversation);
       setConversationId(newConversation._id);
+
       setUsers([]);
     } catch (err) {
       console.error('Error starting conversation:', err.message);
       setError(err.message);
+    }
+  };
+
+  const handleUserClick = async (userId) => {
+    const existingConversation = conversations.find(convo =>
+      convo.participants.some(participant => participant._id === userId)
+    );
+
+    if (existingConversation) {
+      setSelectedConversation(existingConversation);
+      setConversationId(existingConversation._id);
+    } else {
+      await handleStartConversation(userId);
     }
   };
 
@@ -147,17 +167,22 @@ const Chat = () => {
       <div className='flex-grow flex'>
         <div className='hidden md:block md:w-1/4 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
           <div className="flex-1 p-4">
-            {(conversations.length > 0 ? conversations : users).map((item) => (
+            {(Array.isArray(conversations) && conversations.length > 0 ? conversations : users).map((item) => (
               <MessageBox
                 key={item._id}
-                name={item.participants ? item.participants[1]?.username : item.username}
+                name={item.participants ? item.participants.find(participant => participant._id !== loggedInUserId)?.username : item.username}
                 img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
-                time={item.messages && item.messages.length > 0 ? new Date(item.messages[item.messages.length - 1]?.timestamp).toLocaleTimeString() : ""}
+                time={item.messages && item.messages.length > 0 ? formatTime(item.messages[item.messages.length - 1]?.timestamp) : ""}
                 zone=""
                 count={item.messages ? item.messages.length : 0}
                 message={item.messages && item.messages.length > 0 ? item.messages[item.messages.length - 1]?.content : "Start messaging"}
-                onClick={() => handleConversationClick(item._id)}
-                onCreateConversation={() => handleStartConversation(item._id)}
+                onClick={() => {
+                  if (conversations.length > 0) {
+                    handleConversationClick(item._id);
+                  } else {
+                    handleStartConversation(item._id);
+                  }
+                }}
               />
             ))}
           </div>
@@ -167,7 +192,7 @@ const Chat = () => {
           <div className="flex items-center p-4 bg-gray-800 border-b border-gray-700">
             <div className="flex-shrink-0 mr-4">
               <img
-                src={userDetails ? userDetails.img : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU'}
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
                 className='w-12 h-12 rounded-full'
                 alt='avatar'
               />
@@ -195,11 +220,12 @@ const Chat = () => {
 
           <div className="flex-1 p-4 overflow-y-auto scrollbar-hidden">
             <div className="space-y-4">
-              {selectedConversation && selectedConversation.messages.map((msg, index) => (
+              {selectedConversation && Array.isArray(selectedConversation.messages) && selectedConversation.messages.map((msg, index) => (
                 <div key={index} className={`flex ${msg.sender._id === loggedInUserId ? 'justify-end' : 'justify-start'} mb-2`}>
                   <div className={`p-2 rounded ${msg.sender._id === loggedInUserId ? 'bg-green-700 text-white' : 'bg-gray-600 text-gray-100'}`}>
                     {msg.content}
                   </div>
+                  <span className="text-xs text-gray-400 block mt-1">{formatTime(msg.timestamp)}</span>
                 </div>
               ))}
             </div>
