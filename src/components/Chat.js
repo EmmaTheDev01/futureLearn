@@ -14,7 +14,7 @@ const Chat = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
@@ -30,9 +30,9 @@ const Chat = () => {
           const usersResponse = await axios.get("http://localhost:4000/api/v1/user", {
             headers: { Authorization: `Bearer ${token}` },
           });
-          setUsers(usersResponse.data.data || []);
+          setUsers(usersResponse.data || []);
         } else {
-          setConversations(response.data.data || []);
+          setConversations(response.data || []);
         }
       } catch (err) {
         setError(err.message);
@@ -44,67 +44,40 @@ const Chat = () => {
     fetchConversations();
   }, []);
 
-  const handleUserClick = async (userId) => {
+  const handleConversationClick = async (conversationId) => {
     try {
       const token = localStorage.getItem("token");
-      const currentUserId = localStorage.getItem("loggedInUserId"); // Assuming userId is stored as a plain string
-  
-      // Fetch user details
-      const userResponse = await axios.get(`http://localhost:4000/api/v1/user/${userId}`, {
+      
+      // Fetch conversation details
+      const response = await axios.get(`http://localhost:4000/api/v1/chat/conversation/${conversationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const userData = userResponse.data.data;
-  
-      setUserDetails(userData);
-      setSelectedUser(userId);
-  
-      // Check if conversation already exists
-      const conversationResponse = await axios.get(`http://localhost:4000/api/v1/chat/user/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      // If no conversation exists, create a new one
-      if (!conversationResponse.data.exists) {
-        // Define the function to start a conversation
-        const startConversation = async (participantId) => {
-          try {
-            console.log("Starting conversation with:", currentUserId, participantId); // Debug log
-  
-            const response = await axios.post('http://localhost:4000/api/v1/chat/start', 
-              { participants: [currentUserId, participantId] }, // Send an array of participants
-              { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } }
-            );
-            
-            if (response.status === 201) {
-              console.log('Conversation started or retrieved:', response.data);
-              // Refresh conversations
-              const updatedConversationsResponse = await axios.get("http://localhost:4000/api/v1/chat/my-conversations", {
-                headers: { Authorization: `Bearer ${token}` },
-              });
-              setConversations(updatedConversationsResponse.data || []);
-            } else {
-              console.error('Error:', response.data.message);
-            }
-          } catch (error) {
-            console.error('Failed to start conversation:', error.response ? error.response.data : error.message);
-          }
-        };
-  
-        startConversation(userId); // Pass only userId as participant
+
+      const conversationData = response.data;
+      console.log('Conversation Data:', conversationData);
+
+      // Set the selected conversation
+      setSelectedConversation(conversationData);
+
+      // Fetch user details for the second participant if needed
+      if (Array.isArray(conversationData.participants) && conversationData.participants.length > 1) {
+        const participantId = conversationData.participants[1]._id;
+        
+        // Fetch user details for participant 2
+        const userResponse = await axios.get(`http://localhost:4000/api/v1/user/${participantId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUserDetails(userResponse.data.data);
       }
     } catch (err) {
+      console.error('Error fetching conversation or user details:', err.message);
       setError(err.message);
     }
   };
-  
-  
-  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-
-  // Ensure displayItems is always an array
-  const displayItems = Array.isArray(conversations) && conversations.length > 0 ? conversations : (Array.isArray(users) ? users : []);
 
   return (
     <div className='flex h-screen w-full bg-slate-700'>
@@ -118,22 +91,16 @@ const Chat = () => {
         {/* Messages Section */}
         <div className='hidden md:block md:w-1/4 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
           <div className="flex-1 p-4">
-            {displayItems.map((item) => (
+            {(conversations.length > 0 ? conversations : users).map((item) => (
               <MessageBox
                 key={item._id}
-                name={conversations.length > 0
-                  ? item.participants.map(participant => participant.username).join(', ')
-                  : item.username}
-                img={item.img || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"}
-                time={conversations.length > 0
-                  ? new Date(item.messages[0]?.timestamp).toLocaleTimeString()
-                  : ""}
-                zone={conversations.length > 0
-                  ? new Date(item.messages[0]?.timestamp).toLocaleDateString()
-                  : ""}
-                count={conversations.length > 0 ? item.messages.length : 0}
-                message={conversations.length > 0 ? item.messages[0]?.content : "Start a conversation with this user"}
-                onClick={() => handleUserClick(item._id)}
+                name={item.participants[1] ? item.participants[1].username : item.username}
+                img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU"
+                time={item.messages && item.messages.length > 0 ? new Date(item.messages[0]?.timestamp).toLocaleTimeString() : ""}
+                zone={item.messages && item.messages.length > 1 ? new Date(item.messages[1]?.timestamp).toLocaleDateString() : ""}
+                count={item.messages ? item.messages.length : 0}
+                message={item.messages && item.messages.length > 1 ? item.messages[1]?.content : "Start messaging"}
+                onClick={() => handleConversationClick(item._id)}
               />
             ))}
           </div>
@@ -145,7 +112,7 @@ const Chat = () => {
           <div className="flex items-center p-4 bg-gray-800 border-b border-gray-700">
             <div className="flex-shrink-0 mr-4">
               <img
-                src= 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU'
+                src={userDetails ? userDetails.img : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLIbLTGKz4waJGU2vkbhQkRavjf2OdeY7Eo4l8yFnggdF3fX1bUF4FEUP13o34ioSCm-M&usqp=CAU'}
                 className='w-12 h-12 rounded-full'
                 alt='avatar'
               />
@@ -174,7 +141,13 @@ const Chat = () => {
           {/* Conversations */}
           <div className="flex-1 p-4 overflow-y-auto scrollbar-hidden">
             <div className="space-y-4">
-              {/* Your messages and recipient messages here */}
+              {selectedConversation && selectedConversation.messages.map((msg, index) => (
+                <div key={index} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'} mb-2`}>
+                  <div className={`p-2 rounded ${msg.sender === 'me' ? 'bg-blue-500 text-white' : 'bg-gray-600 text-gray-100'}`}>
+                    {msg.content}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -219,7 +192,7 @@ const Chat = () => {
               {/* Add additional user details here */}
             </>
           ) : (
-            <p>Select a user to view details</p>
+            <p>No user selected</p>
           )}
         </div>
       </div>

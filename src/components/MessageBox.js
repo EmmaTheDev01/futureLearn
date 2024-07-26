@@ -22,12 +22,15 @@ const MessageBox = ({ img, name, time, zone, count, message, onClick }) => {
           <span className="font-semibold text-gray-100 w-full text-start">{name}</span>
           <div className="flex items-center">
             <span className="text-sm text-gray-400 mr-2">{time} <span className="text-gray-500">{zone}</span></span>
-            <span className="inline-flex items-center justify-center w-8 h-6 text-sm font-medium text-white bg-green-800 rounded-full">
-              {count < 10 ? count : "9+"}
-            </span>
+            {count === 0 ? null : (
+              <span className="inline-flex items-center justify-center w-8 h-6 text-sm font-medium text-white bg-green-800 rounded-full">
+                {count < 10 ? count : "9+"}
+              </span>
+            )}
+
           </div>
         </div>
-        <p className="text-gray-300 mb-2 text-start">{message}</p>
+        <p className="text-gray-300 text-sm mb-2 text-start">{message}</p>
       </div>
     </div>
   );
