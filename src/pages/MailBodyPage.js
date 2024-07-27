@@ -1,26 +1,28 @@
-import React, { useContext, useEffect } from 'react'
-import TopNav from '../components/TopNav'
-import FrontPageLeft from '../components/FrontPageLeft'
-import MailMessage from '../components/MailMessage'
-import { AuthContext } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react';
+import TopNav from '../components/TopNav';
+import FrontPageLeft from '../components/FrontPageLeft';
+import MailMessage from '../components/MailMessage';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const MailBodyPage = () => {
-    const [isLoggedIn, loading] = useContext(AuthContext);
+    const { isLoggedIn, loading } = useContext(AuthContext);
     const navigate = useNavigate();
+
     useEffect(() => {
         if (!loading && !isLoggedIn) {
-          navigate('/login');
+            navigate('/login');
         }
-      }, [isLoggedIn, loading, navigate]);
-    
-      if (loading) {
+    }, [isLoggedIn, loading, navigate]);
+
+    if (loading) {
         return (
-          <div className='flex h-screen bg-slate-700 items-center justify-center'>
-            <p className='text-gray-300'>Loading...</p>
-          </div>
+            <div className='flex h-screen bg-slate-700 items-center justify-center'>
+                <p className='text-gray-300'>Loading...</p>
+            </div>
         );
-      }
+    }
+
     return (
         <div className="bg-gray-900 min-h-screen flex flex-col">
             {/* Top Navigation Bar */}
@@ -38,7 +40,7 @@ const MailBodyPage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MailBodyPage
+export default MailBodyPage;

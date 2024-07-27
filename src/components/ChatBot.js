@@ -1,13 +1,12 @@
-// src/components/ChatBot.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaRegCommentDots, FaTimes } from 'react-icons/fa'; // Import icons from react-icons
+import { FaRegCommentDots, FaTimes } from 'react-icons/fa';
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); // Add state for toggling visibility
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,11 +18,12 @@ const ChatBot = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('/api/chat', { message: input });
+      const response = await axios.post('localhost:4000/api/v1/chatbot', { message: input });
       const botReply = response.data.reply;
 
       setMessages([...newMessages, { text: botReply, type: 'bot' }]);
     } catch (error) {
+      console.error('Error:', error); // Log error for debugging
       setMessages([...newMessages, { text: 'Sorry, something went wrong. Please try again.', type: 'bot' }]);
     } finally {
       setLoading(false);
@@ -32,7 +32,6 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Button to toggle ChatBot visibility */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-4 right-4 p-4 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition duration-300 ${isOpen ? 'hidden' : 'block'}`}
@@ -40,7 +39,6 @@ const ChatBot = () => {
       >
         <FaRegCommentDots className="w-5 h-5" />
       </button>
-      {/* ChatBot interface */}
       {isOpen && (
         <div className="fixed bottom-4 right-4 w-80 md:w-96 bg-gray-900 text-white shadow-lg rounded-lg border border-gray-700 overflow-hidden">
           <div className="p-4 h-80 overflow-y-scroll scrollbar-hidden">
@@ -64,7 +62,11 @@ const ChatBot = () => {
               className="flex-1 p-2 border border-gray-600 rounded-l-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Type your message..."
             />
-            <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded-r-lg hover:bg-green-700 transition duration-300">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-green-600 text-white rounded-r-lg hover:bg-green-700 transition duration-300"
+              disabled={loading} // Disable button while loading
+            >
               Send
             </button>
           </form>

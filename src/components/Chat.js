@@ -142,18 +142,7 @@ const Chat = () => {
     }
   };
 
-  const handleUserClick = async (userId) => {
-    const existingConversation = conversations.find(convo =>
-      convo.participants.some(participant => participant._id === userId)
-    );
-
-    if (existingConversation) {
-      setSelectedConversation(existingConversation);
-      setConversationId(existingConversation._id);
-    } else {
-      await handleStartConversation(userId);
-    }
-  };
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -166,6 +155,7 @@ const Chat = () => {
 
       <div className='flex-grow flex'>
         <div className='hidden md:block md:w-1/4 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
+        <h1 className="text-xl font-bold mt-2 text-white mb-2 text-green-500">FutureLearn Connect</h1>
           <div className="flex-1 p-4">
             {(Array.isArray(conversations) && conversations.length > 0 ? conversations : users).map((item) => (
               <MessageBox
