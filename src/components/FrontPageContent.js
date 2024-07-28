@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import groupmembers from "../data/groupmembers";
-import announcements from "../data/announcements";
 
 // Example SVG icons with backgrounds (replace with your own or import from separate files)
 const HeartIcon = () => (
@@ -113,6 +111,7 @@ const ClockIcon = () => (
 
 const FrontPageContent = () => {
   const [profileData, setProfileData] = useState(null);
+  const [myGroups, setMyGroups] = useState([]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -131,10 +130,29 @@ const FrontPageContent = () => {
     getProfile();
   }, []);
 
+  useEffect(() => {
+    const fetchMyGroups = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/v1/group/my-group", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log(response.data);
+        setMyGroups(response.data || []); // Ensure response.data.data is an array
+      } catch (error) {
+        console.log("Failed to fetch group data", error);
+      }
+    };
+
+    fetchMyGroups();
+  }, []);
+
   return (
     <div className="bg-slate-700 min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+          {/* My Group Div */}
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-teal-700 border-b-2 border-teal-500 pb-2">
               <TeamIcon />
@@ -142,41 +160,53 @@ const FrontPageContent = () => {
             </h3>
             <div className="overflow-y-auto max-h-60 scrollbar-hidden">
               <ul className="divide-y divide-gray-200">
-                {groupmembers.map((item, index) => (
-                  <li key={index} className="py-2">
-                    <span className="text-gray-800">{item.firstname} {item.lastname}</span>{" "}
-                    <span className="text-gray-500 text-sm">
-                      {item.role === "admin" ? `(${item.role})` : ""}
-                    </span>
-                  </li>
-                ))}
+                {myGroups.length > 0 ? (
+                  myGroups.map((group) => (
+                    <li key={group._id} className="py-2">
+                      <span className="text-lg text-green-500 font-bold">{group.name}</span>
+                      <ol className="pl-4">
+                        {group.members.map((member) => (
+                          <li key={member._id} className="text-gray-600 py-1">
+                            {member.firstname + " " + member.lastname}
+                          </li>
+                        ))}
+                      </ol>
+                      <span className="text-gray-500 text-sm font-bold">
+                        {group.members.length} Members
+                      </span>
+                    </li>
+                  ))
+                ) : (
+                  <li className="py-2 text-gray-500">No groups found</li>
+                )}
               </ul>
             </div>
             <p className="text-gray-500 text-sm mt-2">
-              {groupmembers.length} Members in this group
+              {myGroups.length} Groups
             </p>
           </div>
+
+          {/* Other Divs (Announcements, Posts, My Profile, Timeline) */}
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-yellow-600 border-b-2 border-yellow-400 pb-2">
               <BellIcon />
-              <span className="ml-2">Announcements ({announcements.length})</span>
+              <span className="ml-2">Announcements</span>
             </h3>
             <div className="overflow-y-auto max-h-60">
-              {announcements.map((alert, index) => (
-                <div key={index} className="py-2">
-                  <h4 className="text-lg font-semibold text-gray-800">{alert.title}</h4>
-                  <h6 className="text-gray-500">{alert.announcer}</h6>
-                </div>
-              ))}
+              {/* Replace with actual announcements data */}
+              <p>No announcements</p>
             </div>
           </div>
+
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-red-600 border-b-2 border-red-400 pb-2">
               <HeartIcon />
               <span className="ml-2">Posts</span>
             </h3>
             {/* Add your posts content here */}
+            <p>No posts</p>
           </div>
+
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-indigo-600 border-b-2 border-indigo-400 pb-2">
               <ProfileIcon />
@@ -194,13 +224,15 @@ const FrontPageContent = () => {
               )}
             </div>
           </div>
-        </div>
-        <div className="bg-slate-300 rounded-lg p-6 shadow-lg mt-6">
-          <h3 className="flex items-center mb-4 text-xl font-semibold text-purple-600 border-b-2 border-purple-400 pb-2">
-            <ClockIcon />
-            <span className="ml-2">Timeline</span>
-          </h3>
-          {/* Add your timeline content here */}
+
+          <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
+            <h3 className="flex items-center mb-4 text-xl font-semibold text-purple-600 border-b-2 border-purple-400 pb-2">
+              <ClockIcon />
+              <span className="ml-2">Timeline</span>
+            </h3>
+            {/* Add your timeline content here */}
+            <p>No timeline events</p>
+          </div>
         </div>
       </div>
     </div>

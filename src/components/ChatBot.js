@@ -24,7 +24,7 @@ const ChatBot = () => {
       setMessages([...newMessages, { text: botReply, type: 'bot' }]);
     } catch (error) {
       console.error('Error:', error); // Log error for debugging
-      setMessages([...newMessages, { text: 'Sorry, something went wrong. Please try again.', type: 'bot' }]);
+      setMessages([...newMessages, { text: 'Oops! Something went wrong.', type: 'bot' }]);
     } finally {
       setLoading(false);
     }

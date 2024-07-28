@@ -6,13 +6,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Register from "./pages/Register";
 import FrontPage from "./pages/FrontPage";
 import Mail from "./pages/Mail";
-import Group from "./pages/Group";
+import Group from "./pages/lecturer/Group";
 import MailBodyPage from "./pages/MailBodyPage";
 import { AuthContext } from "./context/AuthContext"; // Import AuthContext
 import LandingPage from "./pages/LandingPage";
 
 const App = () => {
-  const { isLoggedIn, isAdmin } = useContext(AuthContext);
+  const { isLoggedIn, isAdmin, isLecturer } = useContext(AuthContext);
 
   return (
     <Router>
@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/login" element={<Home />} />
           <Route path="/home" element={<FrontPage />} />
           <Route path="/new-account" element={<Register />} />
-          
+
           {/* Protected Routes */}
           <Route
             path="/dashboard"
@@ -41,6 +41,7 @@ const App = () => {
             path="/mymail"
             element={isLoggedIn ? <MailBodyPage /> : <Navigate to="/login" />}
           />
+          <Route path="/create-group" element={<Group />} />
         </Routes>
       </div>
     </Router>

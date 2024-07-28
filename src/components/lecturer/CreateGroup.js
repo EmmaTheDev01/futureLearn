@@ -1,34 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FixedSizeList as List } from 'react-window';
 
 const CreateGroup = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    chiefId: '', // Assuming chiefId is selected separately
-    memberIds: [], // Array to store selected member IDs
-    message: '',
-  });
-
   const [students, setStudents] = useState([]);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [chiefId, setChiefId] = useState(null); // Track chiefId separately
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/v1/users/students');
-        const fetchedStudents = response.data; // Assuming response.data is an array of student objects
-        
-        // Assuming chiefId is already set in formData.chiefId
-        const chief = fetchedStudents.find(student => student._id === formData.chiefId);
-        
-        // Move chief to the front of the students list
-        if (chief) {
-          const chiefIndex = fetchedStudents.indexOf(chief);
-          fetchedStudents.splice(chiefIndex, 1); // Remove chief from current position
-          fetchedStudents.unshift(chief); // Add chief at the beginning of the array
-        }
-
+        const response = await axios.get('http://localhost:4000/api/v1/user', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          params: {
+            role: 'student', // Add query parameter to filter by role
+          },
+        });
+        const fetchedStudents = response.data.data;
         setStudents(fetchedStudents);
       } catch (error) {
         console.error('Error fetching students:', error);
@@ -37,124 +29,132 @@ const CreateGroup = () => {
     };
 
     fetchStudents();
-  }, [formData.chiefId]); // Trigger fetchStudents whenever chiefId changes
+  }, []); // Empty dependency array ensures useEffect runs once on component mount
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleCheckboxChange = (studentId) => {
+    const currentIndex = selectedMembers.indexOf(studentId);
+    const newChecked = [...selectedMembers];
 
-  const handleMemberSelect = (e) => {
-    const memberId = e.target.value;
-    if (!formData.memberIds.includes(memberId)) {
-      setFormData({ ...formData, memberIds: [...formData.memberIds, memberId] });
+    if (currentIndex === -1) {
+      newChecked.push(studentId);
+      if (chiefId === null) {
+        setChiefId(studentId); // Set the first clicked user as chiefId
+      }
     } else {
-      setFormData({
-        ...formData,
-        memberIds: formData.memberIds.filter((id) => id !== memberId),
-      });
+      newChecked.splice(currentIndex, 1);
+      if (chiefId === studentId) {
+        setChiefId(null); // Unset chiefId if unchecked
+      }
     }
+
+    setSelectedMembers(newChecked);
   };
 
-  const handleSubmit = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccessMessage('');
+
+    const formData = {
+      name: e.target.name.value,
+      chiefId: chiefId, // Include chiefId in formData
+      memberIds: selectedMembers,
+      message: e.target.message.value,
+    };
 
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/groups', formData);
-      setSuccessMessage('Group created successfully!');
-      console.log('Group created:', response.data);
-      // Optionally reset form fields after successful submission
-      setFormData({
-        name: '',
-        chiefId: '',
-        memberIds: [],
-        message: '',
+      const response = await axios.post('http://localhost:4000/api/v1/group/create', formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
+
+      setSuccessMessage('Group created successfully!');
+      console.log('Group created:', response.data.data);
+
+      e.target.reset();
+      setSelectedMembers([]);
+      setChiefId(null); // Reset chiefId after successful creation
     } catch (error) {
       setError('Failed to create group. Please check your inputs and try again.');
       console.error('Error creating group:', error);
     }
   };
 
+  // Render individual student item
+  const renderStudentItem = ({ index, style }) => {
+    const student = students[index];
+    return (
+      <div key={student._id} style={style} className="flex items-center">
+        <input
+          type="checkbox"
+          id={student._id}
+          name={student._id}
+          value={student._id}
+          checked={selectedMembers.includes(student._id)}
+          onChange={() => handleCheckboxChange(student._id)}
+          className="mr-2"
+        />
+        <label className="text-gray-200" htmlFor={student._id}>
+          {`${student.firstname} ${student.lastname}`}
+        </label>
+      </div>
+    );
+  };
+
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded-md">
+    <div className="max-w-4xl h-[80vh] mx-auto mt-8 p-6 bg-gray-800 shadow-md rounded-md text-white">
       <h2 className="text-2xl font-semibold mb-4">Create Group</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-300">
             Group Name
           </label>
           <input
             type="text"
             id="name"
             name="name"
-            value={formData.name}
-            onChange={handleChange}
+            placeholder="Enter group name"
+            className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-900 text-white"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="chiefId" className="block text-sm font-medium text-gray-700">
-            Chief ID
-          </label>
-          <input
-            type="text"
-            id="chiefId"
-            name="chiefId"
-            value={formData.chiefId}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
+          <label className="block text-sm font-medium text-gray-300 mb-2">Select Members</label>
+          <div className="h-40 overflow-y-auto">
+            <List
+              height={400} // Specify height for the list container
+              itemCount={students.length}
+              itemSize={50} // Set the height of each item
+              width="100%"
+            >
+              {renderStudentItem}
+            </List>
+          </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="memberIds" className="block text-sm font-medium text-gray-700">
-            Select Members (Select 7 members)
-          </label>
-          <select
-            id="memberIds"
-            name="memberIds"
-            multiple
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            onChange={handleMemberSelect}
-            value={formData.memberIds}
-            required
-          >
-            {students.map((student) => (
-              <option key={student._id} value={student._id}>
-                {student.firstname} {student.lastname}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="message" className="block text-sm font-medium text-gray-300">
             Group Message
           </label>
           <textarea
             id="message"
             name="message"
-            value={formData.message}
-            onChange={handleChange}
+            placeholder="Enter group message"
             rows={4}
+            className="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-900 text-white"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         {successMessage && <p className="text-green-500 text-sm mb-4">{successMessage}</p>}
         <button
           type="submit"
-          className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         >
           Create Group
         </button>
       </form>
-      <div className="mt-4 text-sm text-gray-600">
-        <p>Select 7 members from the list to create a new group.</p>
-        <p>Make sure to provide accurate details including the chief's ID and a group message.</p>
+      <div className="mt-4 text-sm text-gray-300">
+        <p>Select members to include in the group.</p>
+        <p>Make sure to provide accurate details including a group name and message.</p>
       </div>
     </div>
   );
