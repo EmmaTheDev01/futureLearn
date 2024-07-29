@@ -3,7 +3,7 @@ import CreateGroup from '../../components/lecturer/CreateGroup';
 import TopNav from '../../components/TopNav';
 import FrontPageLeft from '../../components/FrontPageLeft';
 
-const Group = () => {
+const CreateGroupPage = () => {
     return (
         <div>
             <TopNav />
@@ -15,4 +15,4 @@ const Group = () => {
     );
 };
 
-export default Group;
+export default CreateGroupPage;

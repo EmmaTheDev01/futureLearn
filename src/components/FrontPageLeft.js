@@ -1,21 +1,18 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaEnvelope, FaUsers, FaComments, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaEnvelope, FaUsers, FaComments, FaQuestionCircle, FaSignOutAlt, FaChartBar } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const FrontPageLeft = () => {
-  // Destructure the context value
-  const { logout, loading } = useContext(AuthContext);
+  const { logout, isAdmin, isLecturer } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Define the handleLogout function
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
- 
   return (
     <div className="text-white h-screen flex flex-col p-4 space-y-4">
       <Link to="/home" className="nav-link flex items-center space-x-2 hover:bg-slate-600 rounded-lg p-2">
@@ -34,6 +31,7 @@ const FrontPageLeft = () => {
         <FaComments className="text-lg" />
         <span>Chat</span>
       </Link>
+     
       <Link to="/help" className="nav-link flex items-center space-x-2 hover:bg-slate-600 rounded-lg p-2">
         <FaQuestionCircle className="text-lg" />
         <span>Help</span>
@@ -45,6 +43,18 @@ const FrontPageLeft = () => {
         <FaSignOutAlt className="text-lg" />
         <span>Logout</span>
       </button>
+      {isAdmin && (
+        <Link to="/admin-dashboard" className="nav-link flex items-center space-x-2 hover:bg-slate-600 rounded-lg p-2">
+          <FaChartBar className="text-lg" />
+          <span>Dashboard</span>
+        </Link>
+      )}
+      {isLecturer && (
+        <Link to="/lecturer-dashboard" className="nav-link flex items-center space-x-2 hover:bg-slate-600 rounded-lg p-2">
+          <FaChartBar className="text-lg" />
+          <span>Dashboard</span>
+        </Link>
+      )}
     </div>
   );
 };

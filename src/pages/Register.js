@@ -13,6 +13,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [username, setUsername] = useState("");
+  const [department, setDepartment] = useState("not assigned");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,6 +29,7 @@ const Register = () => {
           regNo,
           email,
           password,
+          department
         }
       );
 
@@ -108,6 +110,27 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          
+          <div className="w-full">
+            <label htmlFor="department" className="block text-gray-300 mb-1">
+              Select Department
+            </label>
+            <select
+              id="department"
+              name="department"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="w-full p-3 bg-gray-700 text-gray-200 border border-gray-600 rounded-md focus:border-green-500 focus:outline-none"
+            >
+              <option value="computer science">Computer Science</option>
+              <option value="Surveying">Surveying</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Architecture">Architecture</option>
+              <option value="Business">Business</option>
+              <option value="law">Law</option>
+              <option value="not assigned">Not Assigned</option>
+            </select>
+          </div>
 
           <button
             className="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-200 ease-in-out"
