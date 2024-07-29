@@ -12,6 +12,7 @@ import { AuthContext } from "./context/AuthContext"; // Import AuthContext
 import LandingPage from "./pages/LandingPage";
 import CreateGroupPage from './pages/lecturer/CreateGroupPage';
 import CreateAssignmentPage from "./pages/lecturer/CreateAssignmentPage";
+import LecturerHomePage from "./pages/lecturer/LecturerHomePage";
 const App = () => {
   const { isLoggedIn, isAdmin, isLecturer } = useContext(AuthContext);
 
@@ -41,6 +42,10 @@ const App = () => {
           <Route
             path="/mymail"
             element={isLoggedIn ? <MailBodyPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/lecturer-dashboard"
+            element={isLoggedIn ? <LecturerHomePage /> : <Navigate to="/login" />}
           />
           <Route path="/create-group" element={<CreateGroupPage />} />
           <Route path="/new-assignment" element={<CreateAssignmentPage />} />
