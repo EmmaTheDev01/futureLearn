@@ -27,6 +27,22 @@ const AllAssignmentTable = () => {
     fetchAssignments();
   }, []);
 
+  const handleDelete = async (assignmentId) => {
+    try {
+      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+      await axios.delete(`http://localhost:4000/api/v1/assignment/${assignmentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      });
+      // Remove the deleted assignment from the state
+      setAssignments(assignments.filter(assignment => assignment._id !== assignmentId));
+    } catch (error) {
+      setError('Failed to delete assignment'); // Handle error
+      console.error('Error deleting assignment:', error);
+    }
+  };
+
   if (loading) return <div className="p-6 bg-gray-900 text-gray-200 min-h-screen">Loading...</div>;
   if (error) return <div className="p-6 bg-gray-900 text-gray-200 min-h-screen">Error: {error}</div>;
 
@@ -40,14 +56,23 @@ const AllAssignmentTable = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">ID</th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Title</th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Description</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Actions</th>
             </tr>
           </thead>
           <tbody className="text-gray-400">
             {assignments.map(assignment => (
-              <tr key={assignment.id} className="hover:bg-gray-700">
+              <tr key={assignment._id} className="hover:bg-gray-700">
                 <td className="px-6 text-start py-4 text-sm font-medium">{assignment._id}</td>
                 <td className="px-6 text-start py-4 text-sm font-medium">{assignment.title}</td>
                 <td className="px-6 text-start py-4 text-sm">{assignment.description}</td>
+                <td className="px-6 text-start py-4 text-sm">
+                  <button
+                    onClick={() => handleDelete(assignment._id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
