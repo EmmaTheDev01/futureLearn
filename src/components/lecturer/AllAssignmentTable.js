@@ -32,7 +32,7 @@ const AllAssignmentTable = () => {
 
   return (
     <div className="p-6 bg-gray-900 text-gray-200 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-4">All Assignments</h2>
+      <h2 className="text-2xl font-semibold mb-4">All Assignments ({assignments.length})</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-800 border border-gray-700 rounded-md">
           <thead className="bg-gray-700">
@@ -40,16 +40,14 @@ const AllAssignmentTable = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">ID</th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Title</th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Description</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Due Date</th>
             </tr>
           </thead>
           <tbody className="text-gray-400">
             {assignments.map(assignment => (
               <tr key={assignment.id} className="hover:bg-gray-700">
-                <td className="px-6 py-4 text-sm font-medium">{assignment.id}</td>
-                <td className="px-6 py-4 text-sm font-medium">{assignment.title}</td>
-                <td className="px-6 py-4 text-sm">{assignment.description}</td>
-                <td className="px-6 py-4 text-sm">{assignment.dueDate}</td>
+                <td className="px-6 text-start py-4 text-sm font-medium">{assignment._id}</td>
+                <td className="px-6 text-start py-4 text-sm font-medium">{assignment.title}</td>
+                <td className="px-6 text-start py-4 text-sm">{assignment.description}</td>
               </tr>
             ))}
           </tbody>

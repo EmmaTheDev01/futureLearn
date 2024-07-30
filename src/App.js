@@ -13,6 +13,9 @@ import LandingPage from "./pages/LandingPage";
 import CreateGroupPage from './pages/lecturer/CreateGroupPage';
 import CreateAssignmentPage from "./pages/lecturer/CreateAssignmentPage";
 import LecturerHomePage from "./pages/lecturer/LecturerHomePage";
+import AllGroupsPage from "./pages/lecturer/AllGroupsPage";
+import ALlAssignmentPage from "./pages/lecturer/AllAssignmentPage";
+import AllStudentsPage from "./pages/lecturer/AllStudentsPage";
 const App = () => {
   const { isLoggedIn, isAdmin, isLecturer } = useContext(AuthContext);
 
@@ -49,6 +52,9 @@ const App = () => {
           />
           <Route path="/create-group" element={<CreateGroupPage />} />
           <Route path="/new-assignment" element={<CreateAssignmentPage />} />
+          <Route path="/all-groups" element={<AllGroupsPage />} />
+          <Route path="/all-assignments" element={<ALlAssignmentPage />} />
+          <Route path="/students" element={<AllStudentsPage />} />
         </Routes>
       </div>
     </Router>
