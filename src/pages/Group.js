@@ -4,6 +4,9 @@ import FrontpageLeft from "../components/FrontPageLeft";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css'; // Import the Quill CSS
+import './quill-dark.css'; // Import your custom dark mode CSS for Quill
 
 const Group = () => {
   const { isLoggedIn, loading } = useContext(AuthContext);
@@ -67,8 +70,8 @@ const Group = () => {
     setSelectedAssignment(assignment);
   };
 
-  const handleDiscussionChange = (event) => {
-    setDiscussion(event.target.value);
+  const handleDiscussionChange = (value) => {
+    setDiscussion(value);
   };
 
   const handleSubmitDiscussion = async (event) => {
@@ -159,7 +162,6 @@ const Group = () => {
     </li>
   ));
 
-  // Map discussion posts with user details
   const discussionPosts = answers.map(item => {
     const member = members.find(member => member._id === item.user); // Ensure 'user' field is available in 'answers'
     const memberName = member ? `${member.firstname} ${member.lastname}` : 'Unknown User';
@@ -167,9 +169,9 @@ const Group = () => {
     return (
       <div key={item._id} className="bg-gray-800 p-4 rounded-lg mb-4 shadow-md">
         <div className="mb-2">
-          <h4 className="text-lg font-semibold text-gray-100">{memberName}</h4>
+          <h4 className="text-lg text-start font-semibold text-gray-100">{memberName}</h4>
         </div>
-        <p className="text-gray-300 mb-2">{item.answer}</p>
+        <p className="text-gray-300 mb-2 text-start" dangerouslySetInnerHTML={{ __html: item.answer }}></p>
         <div className="flex space-x-4 text-blue-400">
           <button className="hover:text-blue-500">Reply</button>
           <button className="hover:text-blue-500">Grade</button>
@@ -231,13 +233,11 @@ const Group = () => {
                   selected assignment. Once you’re done, click the submit button.
                 </p>
                 <form onSubmit={handleSubmitDiscussion} className="mb-6">
-                  <textarea
-                    className="w-full h-40 p-2 bg-gray-800 text-gray-300 rounded-md border border-gray-700"
+                  <ReactQuill
                     value={discussion}
                     onChange={handleDiscussionChange}
-                    placeholder="Write your answers here..."
-                    required
-                  ></textarea>
+                    className="bg-slate-800 text-white"
+                  />
                   <button
                     type="submit"
                     className="mt-4 py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200 ease-in-out"

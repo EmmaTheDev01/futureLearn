@@ -18,7 +18,8 @@ const ChatBot = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('localhost:4000/api/v1/chatbot', { message: input });
+      // Include the protocol in the URL
+      const response = await axios.post('http://localhost:4000/api/v1/chatbot', { message: input });
       const botReply = response.data.reply;
 
       setMessages([...newMessages, { text: botReply, type: 'bot' }]);
