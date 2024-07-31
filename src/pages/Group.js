@@ -14,6 +14,7 @@ const Group = () => {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [discussion, setDiscussion] = useState("");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -29,8 +30,12 @@ const Group = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          setGroupData(response.data[0]); // Use the first item if it’s an array
+        } else {
+          setError("Invalid group data format");
+        }
         console.log("Fetched group data:", response.data); // Debug log
-        setGroupData(response.data);
       } catch (error) {
         setError("Failed to fetch group data");
         console.error("Failed to fetch group data", error);
@@ -48,7 +53,6 @@ const Group = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log("Fetched assignments:", response.data); // Debug log
         setAssignments(response.data);
       } catch (error) {
         setError("Failed to fetch assignments");
@@ -60,7 +64,6 @@ const Group = () => {
   }, []);
 
   const handleAssignmentSelect = (assignment) => {
-    console.log("Selected assignment:", assignment); // Debug log
     setSelectedAssignment(assignment);
   };
 
@@ -70,40 +73,27 @@ const Group = () => {
 
   const handleSubmitDiscussion = async (event) => {
     event.preventDefault();
-    if (!selectedAssignment || !groupData) {
+    if (!selectedAssignment || !groupData || !groupData._id) {
       setError("No assignment or group data available");
+      console.log("Selected assignment or group data is missing", { selectedAssignment, groupData }); // Debug log
       return;
     }
 
-    console.log("Submitting discussion for assignment:", selectedAssignment._id); // Debug log
-
-    const answerData = {
-      assignment: selectedAssignment._id,
-      answer: discussion,
-    };
-
     try {
-      const existingAnswer = groupData.answers?.find(
-        (ans) => ans.assignment.toString() === selectedAssignment._id.toString()
-      );
+      const answerData = {
+        assignmentId: selectedAssignment._id,
+        answers: discussion,
+      };
 
-      if (existingAnswer) {
-        await axios.put(`http://localhost:4000/api/v1/group/${groupData._id}/answer`, answerData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-      } else {
-        await axios.post(`http://localhost:4000/api/v1/group/${groupData._id}/answer`, answerData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-      }
+      await axios.put(`http://localhost:4000/api/v1/group/${groupData._id}/submit-answers`, answerData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       setDiscussion("");
       setSelectedAssignment(null);
-      alert("Assignment answers submitted successfully!");
+      setSuccess("Assignment answers submitted successfully!");
     } catch (error) {
       setError("Failed to submit assignment answers");
       console.error("Failed to submit assignment answers", error.response?.data?.error || error);
@@ -113,10 +103,9 @@ const Group = () => {
   const handleAddGroupToAssignment = async () => {
     if (!selectedAssignment || !groupData?._id) {
       setError("No assignment or group data available");
+      console.log("Selected assignment or group data is missing", { selectedAssignment, groupData }); // Debug log
       return;
     }
-
-    console.log("Adding group to assignment:", selectedAssignment._id); // Debug log
 
     try {
       await axios.post(`http://localhost:4000/api/v1/assignment/${selectedAssignment._id}/add-group`, {
@@ -126,7 +115,7 @@ const Group = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       });
-      alert("Group added to assignment successfully!");
+      setSuccess("Group added to assignment successfully!");
       setSelectedAssignment(null);
     } catch (error) {
       setError("Failed to add group to assignment");
@@ -150,7 +139,15 @@ const Group = () => {
     );
   }
 
-  const { name, chief, members = [], discussions = [] } = groupData;
+  if (success) {
+    return (
+      <div className="flex h-screen bg-slate-700 items-center justify-center">
+        <p className="text-green-500">{success}</p>
+      </div>
+    );
+  }
+
+  const { name, chief, members = [], answers = [] } = groupData;
   const chiefName = members.find(member => member._id === chief);
 
   const memberList = members.map(member => (
@@ -162,18 +159,24 @@ const Group = () => {
     </li>
   ));
 
-  const discussionPosts = discussions.map(item => (
-    <div key={item._id} className="bg-gray-800 p-4 rounded-lg mb-4 shadow-md">
-      <div className="mb-2">
-        <h4 className="text-lg font-semibold text-gray-100">{item.member}</h4>
+  // Map discussion posts with user details
+  const discussionPosts = answers.map(item => {
+    const member = members.find(member => member._id === item.user); // Ensure 'user' field is available in 'answers'
+    const memberName = member ? `${member.firstname} ${member.lastname}` : 'Unknown User';
+
+    return (
+      <div key={item._id} className="bg-gray-800 p-4 rounded-lg mb-4 shadow-md">
+        <div className="mb-2">
+          <h4 className="text-lg font-semibold text-gray-100">{memberName}</h4>
+        </div>
+        <p className="text-gray-300 mb-2">{item.answer}</p>
+        <div className="flex space-x-4 text-blue-400">
+          <button className="hover:text-blue-500">Reply</button>
+          <button className="hover:text-blue-500">Grade</button>
+        </div>
       </div>
-      <p className="text-gray-300 mb-2">{item.post}</p>
-      <div className="flex space-x-4 text-blue-400">
-        <button className="hover:text-blue-500">Reply</button>
-        <button className="hover:text-blue-500">Grade</button>
-      </div>
-    </div>
-  ));
+    );
+  });
 
   return (
     <div className="bg-slate-900 min-h-screen">
@@ -221,35 +224,44 @@ const Group = () => {
               </div>
             </div>
             {selectedAssignment && (
-              <div className="flex flex-col lg:flex-row gap-6">
-                <div className="flex-1 bg-slate-700 p-4 rounded-lg shadow-md">
-                  <h3 className="text-xl font-semibold text-gray-100 mb-4">Assignment Discussion Form</h3>
-                  <p className="text-gray-300 mb-4">
-                    Below is the textfield where you have to input the answer to the
-                    question and share your thoughts on the selected assignment with
-                    the group. Remember, if you don't submit your assignment answer,
-                    the group work will not be submitted for grading.
-                  </p>
-                  <form onSubmit={handleSubmitDiscussion}>
-                    <textarea
-                      className="w-full h-40 p-3 bg-slate-800 border border-gray-600 rounded-md text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                      placeholder="Give your answer"
-                      value={discussion}
-                      onChange={handleDiscussionChange}
-                    ></textarea>
-                    <button
-                      type="submit"
-                      className="mt-4 w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200 ease-in-out"
-                    >
-                      Submit
-                    </button>
-                  </form>
+              <div className="bg-slate-700 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold text-gray-100 mb-4">Assignment Discussion Form</h3>
+                <p className="text-gray-300 mb-4">
+                  Below is the textfield where you have to input the answer to the
+                  selected assignment. Once you’re done, click the submit button.
+                </p>
+                <form onSubmit={handleSubmitDiscussion} className="mb-6">
+                  <textarea
+                    className="w-full h-40 p-2 bg-gray-800 text-gray-300 rounded-md border border-gray-700"
+                    value={discussion}
+                    onChange={handleDiscussionChange}
+                    placeholder="Write your answers here..."
+                    required
+                  ></textarea>
+                  <button
+                    type="submit"
+                    className="mt-4 py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200 ease-in-out"
+                  >
+                    Submit
+                  </button>
+                </form>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-100 mb-4">Discussions</h3>
+                  {discussionPosts.length > 0 ? (
+                    <div>
+                      {discussionPosts}
+                    </div>
+                  ) : (
+                    <p className="text-gray-300">No discussions available.</p>
+                  )}
                 </div>
               </div>
             )}
-            <div className="mt-8 bg-slate-700 p-4 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-gray-100 mb-4">Discussions Forum</h3>
-              {discussionPosts.length > 0 ? discussionPosts : <p className="text-gray-300">No discussions yet.</p>}
+            <div className="mt-8">
+              <h3 className="text-2xl font-bold text-gray-100 mb-4">Group Members</h3>
+              <ul className="list-disc list-inside">
+                {memberList}
+              </ul>
             </div>
           </div>
         </div>
