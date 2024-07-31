@@ -180,15 +180,15 @@ const FrontPageContent = () => {
                 {myGroups.length > 0 ? (
                   myGroups.map((group) => (
                     <li key={group._id} className="py-2">
-                      <span className="text-lg text-green-500 font-bold">{group.name}</span>
+                      <span className="text-lg text-green-500 font-bold text-start">{group.name}</span>
                       <ol className="pl-4">
                         {group.members.map((member) => (
-                          <li key={member._id} className="text-gray-600 py-1">
+                          <li key={member._id} className="text-gray-600 py-1 text-start">
                             {member.firstname + " " + member.lastname}
                           </li>
                         ))}
                       </ol>
-                      <span className="text-gray-500 text-sm font-bold">
+                      <span className="text-gray-500 text-sm font-bold text-start">
                         {group.members.length} Members
                       </span>
                     </li>
