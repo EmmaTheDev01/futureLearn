@@ -67,9 +67,14 @@ const MailMessage = () => {
         </h5>
         <span className="text-xs sm:text-sm text-gray-500">To {email.to}</span>
       </div>
-
+      <h3 className="text-lg sm:text-l font-bold mb-1 sm:mb-2 text-start">
+        Subject: {email.subject}
+      </h3>
       <div className="space-y-2 sm:space-y-4 mb-4 text-start">
-        <p>{email.text}</p>
+        {/* Render the HTML content from the Quill editor */}
+        <div
+          dangerouslySetInnerHTML={{ __html: email.html }} // Assuming email.html contains the HTML content
+        />
       </div>
     </div>
   );

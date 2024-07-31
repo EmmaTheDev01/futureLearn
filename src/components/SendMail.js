@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // import Quill styles
 
 const SendMail = () => {
   const [email, setEmail] = useState('');
@@ -12,8 +14,8 @@ const SendMail = () => {
       from: localStorage.getItem("userEmail"),
       to: email,
       subject: subject,
-      text: message,
-      html: `<p>${message}</p>`
+      text: message, // The text content from the editor
+      html: message, // The HTML content from the editor
     };
 
     try {
@@ -38,7 +40,7 @@ const SendMail = () => {
         alert('Failed to send email: ' + result.message);
       }
     } catch (error) {
-      console.error('Error:', error.message || error); // Log the error message
+      console.error('Error:', error.message || error);
       alert('An error occurred while sending the email.');
     }
   };
@@ -62,16 +64,17 @@ const SendMail = () => {
             className="w-full p-3 border border-gray-600 rounded-md bg-slate-800 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Subject"
           />
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full p-3 border border-gray-600 rounded-md bg-slate-800 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Message"
-            rows="6"
-          />
+          <div className="bg-slate-800 border border-gray-600 rounded-md">
+            <ReactQuill
+              value={message}
+              onChange={setMessage}
+              className="h-50 z-0"
+              theme="snow"
+            />
+          </div>
           <button
             type="submit"
-            className="w-full py-3 bg-green-800 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200 ease-in-out"
+            className="w-full z-50 py-3 bg-green-800 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200 ease-in-out"
           >
             Send
           </button>
