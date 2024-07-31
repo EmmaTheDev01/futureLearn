@@ -8,6 +8,7 @@ import { FaVideo, FaPhoneAlt } from "react-icons/fa";
 import EmojiPickerToggle from './EmjiPickerToggle';
 import AudioRecorderComponent from './AudorecorderComponent';
 import LeftNav from './LeftNav';
+import UserModal from './UserModal'; // Import the UserModal component
 
 const Chat = () => {
   const [conversations, setConversations] = useState([]);
@@ -18,6 +19,7 @@ const Chat = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [message, setMessage] = useState('');
   const [conversationId, setConversationId] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
 
   const loggedInUserId = localStorage.getItem("loggedInUserId");
 
@@ -142,7 +144,41 @@ const Chat = () => {
     }
   };
 
-  
+  const handleOpenModal = () => {
+    setModalOpen(true);
+    fetchUsers(); // Fetch users when opening the modal
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleSelectUser = async (userId) => {
+    await handleStartConversation(userId);
+    handleCloseModal();
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:4000/api/v1/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUsers(response.data.data || []);
+    } catch (err) {
+      console.error('Error fetching users:', err.message);
+      setError(err.message);
+    }
+  };
+
+  // Function to sort conversations based on the latest message timestamp
+  const sortedConversations = conversations.slice().sort((a, b) => {
+    const lastMessageA = a.messages[a.messages.length - 1];
+    const lastMessageB = b.messages[b.messages.length - 1];
+    const timestampA = lastMessageA ? new Date(lastMessageA.timestamp).getTime() : 0;
+    const timestampB = lastMessageB ? new Date(lastMessageB.timestamp).getTime() : 0;
+    return timestampB - timestampA; // Newest first
+  });
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -155,9 +191,15 @@ const Chat = () => {
 
       <div className='flex-grow flex'>
         <div className='hidden md:block md:w-1/4 border-r border-gray-700 shadow-sm overflow-auto scrollbar-hidden'>
-        <h1 className="text-xl font-bold mt-2 text-white mb-2 text-green-500">FutureLearn Connect</h1>
+          <h1 className="text-xl font-bold mt-2 text-white mb-2 text-green-500">FutureLearn Connect</h1>
+          <button
+            onClick={handleOpenModal}
+            className="text-green-500 hover:text-green-400 p-2 rounded mb-4 block mx-auto"
+          >
+            Start New Conversation
+          </button>
           <div className="flex-1 p-4">
-            {(Array.isArray(conversations) && conversations.length > 0 ? conversations : users).map((item) => (
+            {(Array.isArray(conversations) && conversations.length > 0 ? sortedConversations : users).map((item) => (
               <MessageBox
                 key={item._id}
                 name={item.participants ? item.participants.find(participant => participant._id !== loggedInUserId)?.username : item.username}
@@ -264,6 +306,14 @@ const Chat = () => {
           )}
         </div>
       </div>
+
+      {modalOpen && (
+        <UserModal
+          users={users}
+          onClose={handleCloseModal}
+          onSelect={handleSelectUser}
+        />
+      )}
     </div>
   );
 };
