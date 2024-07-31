@@ -12,7 +12,7 @@ const TopNav = () => {
   return (
     <div className="relative bg-gray-900 text-white p-4 flex justify-between items-center">
       <div className="flex items-center">
-        <div className="text-2xl mr-4">Logo</div>
+      <div className="text-2xl mr-4 font-bold logo-text">FutureLearn🌿</div>
       </div>
       <div className="flex items-center">
         <div className="mr-4">

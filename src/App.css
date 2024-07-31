@@ -9,6 +9,9 @@
   height: 40vmin;
   pointer-events: none;
 }
+.logo-text {
+  font-family: 'Lobster', cursive;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
