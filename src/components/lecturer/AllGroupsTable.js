@@ -27,6 +27,22 @@ const AllGroupsTable = () => {
     fetchGroups();
   }, []);
 
+  const handleDelete = async (groupId) => {
+    try {
+      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+      await axios.delete(`http://localhost:4000/api/v1/group/${groupId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Set the Authorization header
+        },
+      });
+      // Remove the deleted group from the state
+      setGroups(groups.filter(group => group._id !== groupId));
+    } catch (error) {
+      setError('Failed to delete group'); // Handle error
+      console.error('Error deleting group:', error);
+    }
+  };
+
   if (loading) return <div className="p-6 bg-gray-900 text-gray-200 min-h-screen flex items-center justify-center">Loading...</div>;
   if (error) return <div className="p-6 bg-gray-900 text-gray-200 min-h-screen flex items-center justify-center">Error: {error}</div>;
 
@@ -41,15 +57,24 @@ const AllGroupsTable = () => {
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Name</th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Members</th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Created Date</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-200">Actions</th>
             </tr>
           </thead>
           <tbody className="text-gray-400">
             {groups.map(group => (
-              <tr key={group.id} className="hover:bg-gray-700">
+              <tr key={group._id} className="hover:bg-gray-700">
                 <td className="px-6 text-start py-4 text-sm font-medium">{group._id}</td>
                 <td className="px-6 text-start py-4 text-sm font-medium">{group.name}</td>
                 <td className="px-6 text-start py-4 text-sm">{group.members.length}</td>
-                <td className="px-6 text-start py-4 text-sm">{group.updatedAt}</td>
+                <td className="px-6 text-start py-4 text-sm">{new Date(group.updatedAt).toLocaleDateString()}</td>
+                <td className="px-6 text-start py-4 text-sm">
+                  <button
+                    onClick={() => handleDelete(group._id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

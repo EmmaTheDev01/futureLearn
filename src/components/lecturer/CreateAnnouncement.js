@@ -3,8 +3,7 @@ import axios from 'axios';
 
 const CreateAnnouncement = () => {
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [desc, setDesc] = useState('');
   const [redirect, setRedirect] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -18,14 +17,13 @@ const CreateAnnouncement = () => {
 
     try {
       const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-      await axios.post('http://localhost:4000/api/v1/announcement/create', 
-        { title, description, imageUrl, redirect },
+      await axios.post('http://localhost:4000/api/v1/announcement/create',
+        { title, desc, redirect },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSuccess('Announcement created successfully!');
       setTitle('');
-      setDescription('');
-      setImageUrl('');
+      setDesc('');
       setRedirect('');
     } catch (error) {
       setError('Failed to create announcement');
@@ -54,21 +52,11 @@ const CreateAnnouncement = () => {
           <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
           <textarea
             id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
             rows="4"
             className="w-full px-4 py-2 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600"
             required
-          />
-        </div>
-        <div>
-          <label htmlFor="imageUrl" className="block text-sm font-medium mb-1">Image URL</label>
-          <input
-            id="imageUrl"
-            type="text"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600"
           />
         </div>
         <div>

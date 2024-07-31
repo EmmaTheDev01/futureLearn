@@ -112,6 +112,7 @@ const ClockIcon = () => (
 const FrontPageContent = () => {
   const [profileData, setProfileData] = useState(null);
   const [myGroups, setMyGroups] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -138,7 +139,6 @@ const FrontPageContent = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(response.data);
         setMyGroups(response.data || []); // Ensure response.data.data is an array
       } catch (error) {
         console.log("Failed to fetch group data", error);
@@ -146,6 +146,23 @@ const FrontPageContent = () => {
     };
 
     fetchMyGroups();
+  }, []);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/v1/announcement", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setAnnouncements(response.data || []); // Ensure response.data is an array
+      } catch (error) {
+        console.log("Failed to fetch announcements", error);
+      }
+    };
+
+    fetchAnnouncements();
   }, []);
 
   return (
@@ -186,18 +203,30 @@ const FrontPageContent = () => {
             </p>
           </div>
 
-          {/* Other Divs (Announcements, Posts, My Profile, Timeline) */}
+          {/* Announcements Div */}
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-yellow-600 border-b-2 border-yellow-400 pb-2">
               <BellIcon />
               <span className="ml-2">Announcements</span>
             </h3>
             <div className="overflow-y-auto max-h-60">
-              {/* Replace with actual announcements data */}
-              <p>No announcements</p>
+              {announcements.length > 0 ? (
+                <ul className="divide-y divide-gray-200">
+                  {announcements.map((announcement) => (
+                    <li key={announcement._id} className="py-4">
+                      <h4 className="text-lg font-semibold text-gray-800">{announcement.title}</h4>
+                      <p className="text-gray-600 mt-2">{announcement.desc}</p>
+                      <p className="text-gray-400 text-sm mt-2">Posted on {new Date(announcement.updatedAt).toLocaleDateString()}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No announcements</p>
+              )}
             </div>
           </div>
 
+          {/* Posts Div */}
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-red-600 border-b-2 border-red-400 pb-2">
               <HeartIcon />
@@ -207,6 +236,7 @@ const FrontPageContent = () => {
             <p>No posts</p>
           </div>
 
+          {/* My Profile Div */}
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-indigo-600 border-b-2 border-indigo-400 pb-2">
               <ProfileIcon />
@@ -225,6 +255,7 @@ const FrontPageContent = () => {
             </div>
           </div>
 
+          {/* Timeline Div */}
           <div className="bg-slate-300 rounded-lg p-6 shadow-lg">
             <h3 className="flex items-center mb-4 text-xl font-semibold text-purple-600 border-b-2 border-purple-400 pb-2">
               <ClockIcon />

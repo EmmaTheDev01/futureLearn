@@ -2,21 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios
 import { Link } from 'react-router-dom'; // Use Link for navigation
 import { FaHome, FaUsers, FaCalendarAlt, FaBook, FaUsersCog } from 'react-icons/fa'; // For sidebar icons
-import { HiOutlineLogout, HiChevronDown } from 'react-icons/hi'; // Logout and Dropdown icons
+import { HiOutlineLogout } from 'react-icons/hi'; // Logout icon
 
-const LecturerHomePage = () => {
-    const [assignmentsDropdownOpen, setAssignmentsDropdownOpen] = useState(false);
-    const [groupsDropdownOpen, setGroupsDropdownOpen] = useState(false);
+const AdminDashboard = () => {
     const [assignmentCount, setAssignmentCount] = useState(0); // State to store assignment count
     const [announcementCount, setAnnouncementCount] = useState(0); // State to store announcement count
-
-    const toggleAssignmentsDropdown = () => {
-        setAssignmentsDropdownOpen(!assignmentsDropdownOpen);
-    };
-
-    const toggleGroupsDropdown = () => {
-        setGroupsDropdownOpen(!groupsDropdownOpen);
-    };
 
     useEffect(() => {
         // Get the token from localStorage
@@ -59,7 +49,7 @@ const LecturerHomePage = () => {
             {/* Sidebar */}
             <aside className="w-64 bg-gray-800">
                 <div className="flex items-center justify-center py-6 bg-gray-700">
-                    <h1 className="text-2xl font-semibold">Lecturer Dashboard</h1>
+                    <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
                 </div>
                 <nav className="mt-6">
                     <ul>
@@ -70,63 +60,25 @@ const LecturerHomePage = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/students" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
+                            <Link to="/all-users" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
                                 <FaUsers className="mr-4" />
-                                Students
+                                Users
                             </Link>
                         </li>
-                        <li className={`relative ${assignmentsDropdownOpen ? 'mb-16' : ''}`}>
-                            <button
-                                onClick={toggleAssignmentsDropdown}
-                                className="flex items-center px-6 py-3 w-full text-gray-300 hover:bg-gray-600 focus:outline-none"
-                            >
+                        <li>
+                            <Link to="/all-assignments" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
                                 <FaCalendarAlt className="mr-4" />
-                                Assignments
-                                <HiChevronDown className="ml-auto" />
-                            </button>
-                            {assignmentsDropdownOpen && (
-                                <div className="w-full bg-gray-700 mt-2 rounded-md shadow-lg">
-                                    <Link
-                                        to="/all-assignments"
-                                        className="block px-6 py-3 hover:bg-gray-600"
-                                    >
-                                        All Assignments
-                                    </Link>
-                                    <Link
-                                        to="/new-assignment"
-                                        className="block px-6 py-3 hover:bg-gray-600"
-                                    >
-                                        Create Assignment
-                                    </Link>
-                                </div>
-                            )}
+                                All Assignments
+                            </Link>
                         </li>
-                        <li className={`relative ${groupsDropdownOpen ? 'mb-16' : ''}`}>
-                            <button
-                                onClick={toggleGroupsDropdown}
-                                className="flex items-center px-6 py-3 w-full text-gray-300 hover:bg-gray-600 focus:outline-none"
-                            >
+                        
+                        <li>
+                            <Link to="/all-groups" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
                                 <FaUsersCog className="mr-4" />
-                                Groups
-                                <HiChevronDown className="ml-auto" />
-                            </button>
-                            {groupsDropdownOpen && (
-                                <div className="w-full bg-gray-700 mt-2 rounded-md shadow-lg">
-                                    <Link
-                                        to="/all-groups"
-                                        className="block px-6 py-3 hover:bg-gray-600"
-                                    >
-                                        All Groups
-                                    </Link>
-                                    <Link
-                                        to="/create-group"
-                                        className="block px-6 py-3 hover:bg-gray-600"
-                                    >
-                                        Create Group
-                                    </Link>
-                                </div>
-                            )}
+                                All Groups
+                            </Link>
                         </li>
+                        
                         <li>
                             <Link to="/create-announcement" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
                                 <FaBook className="mr-4" />
@@ -177,4 +129,4 @@ const LecturerHomePage = () => {
     );
 };
 
-export default LecturerHomePage;
+export default AdminDashboard;
