@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isLecturer, setIsLecturer] = useState(false); // New state for lecturer role
+  const [isLecturer, setIsLecturer] = useState(false); // State for lecturer role
 
   const checkAuthStatus = () => {
     const token = Cookies.get('token') || localStorage.getItem('token');
@@ -16,13 +16,13 @@ const AuthProvider = ({ children }) => {
     if (token) {
       setIsLoggedIn(true);
       setIsAdmin(role === 'admin');
-      setIsLecturer(role === 'lecturer'); // Check if role is lecturer
+      setIsLecturer(role === 'lecturer');
     } else {
       setIsLoggedIn(false);
       setIsAdmin(false);
-      setIsLecturer(false); // Reset isLecturer if not logged in
+      setIsLecturer(false);
     }
-    setLoading(false); // Ensure loading is set to false after checking auth status
+    setLoading(false);
   };
 
   const login = (token, role) => {
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
     localStorage.setItem('role', role);
     Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'Strict' });
     setIsAdmin(role === 'admin');
-    setIsLecturer(role === 'lecturer'); // Set isLecturer based on role
+    setIsLecturer(role === 'lecturer');
   };
 
   const logout = () => {
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('role');
     setIsLoggedIn(false);
     setIsAdmin(false);
-    setIsLecturer(false); // Reset isLecturer on logout
+    setIsLecturer(false);
   };
 
   useEffect(() => {

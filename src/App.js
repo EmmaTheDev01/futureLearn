@@ -19,6 +19,7 @@ import AllStudentsPage from "./pages/lecturer/AllStudentsPage";
 import CreateAnnouncementPage from "./pages/lecturer/CreateAnnouncementPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AllUsersPage from "./pages/admin/AllUsersPage";
+import Help from "./pages/Help";
 const App = () => {
   const { isLoggedIn, isAdmin, isLecturer } = useContext(AuthContext);
 
@@ -62,6 +63,7 @@ const App = () => {
           <Route path="/create-announcement" element={<CreateAnnouncementPage />} />
           <Route path="/admin-dashboard" element={isAdmin ? <AdminDashboard /> : <Navigate to="/login" />} />
           <Route path="/all-users" element={<AllUsersPage />} />
+          <Route path='/help' element={<Help />} />
         </Routes>
       </div>
     </Router>
