@@ -5,7 +5,6 @@ import { FaUsers } from 'react-icons/fa'; // Example icon from React Icons
 
 const AllGroupsTable = () => {
   const [groups, setGroups] = useState([]);
-
   useEffect(() => {
     const fetchGroups = async () => {
       try {

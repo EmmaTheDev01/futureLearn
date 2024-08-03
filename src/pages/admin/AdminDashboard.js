@@ -66,6 +66,12 @@ const AdminDashboard = () => {
                             </Link>
                         </li>
                         <li>
+                            <Link to="/all-lecturers" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
+                                <FaUsers className="mr-4" />
+                                Lecturers
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/all-assignments" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-600">
                                 <FaCalendarAlt className="mr-4" />
                                 All Assignments

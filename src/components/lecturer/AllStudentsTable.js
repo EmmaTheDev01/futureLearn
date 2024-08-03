@@ -10,12 +10,15 @@ const AllStudentsTable = () => {
     const fetchStudents = async () => {
       try {
         const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-        const response = await axios.get('http://localhost:4000/api/v1/user/all-students', {
+        const response = await axios.get('http://localhost:4000/api/v1/user', {
           headers: {
             Authorization: `Bearer ${token}`, // Set the Authorization header
           },
         });
-        setStudents(response.data.data); // Access data field in the response
+        const allUsers = response.data.data;
+        // Filter users to include only those with the role 'student'
+        const students = allUsers.filter(user => user.role === 'student');
+        setStudents(students); // Set the filtered students data
       } catch (error) {
         setError('Failed to fetch students'); // Handle error
         console.error('Error fetching students:', error);
@@ -27,8 +30,10 @@ const AllStudentsTable = () => {
     fetchStudents();
   }, []);
 
-  if (loading) return <div className="flex justify-center items-center h-full bg-gray-900 text-gray-200">Loading...</div>;
-  if (error) return <div className="flex justify-center items-center h-full bg-gray-900 text-gray-200">Error: {error}</div>;
+  if (loading) 
+    return <div className="flex justify-center items-center h-full bg-gray-900 text-gray-200">Loading...</div>;
+  if (error) 
+    return <div className="flex justify-center items-center h-full bg-gray-900 text-gray-200">Error: {error}</div>;
 
   return (
     <div className="flex flex-col h-full p-6 bg-gray-900 text-gray-200">

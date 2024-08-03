@@ -16,12 +16,11 @@ const CreateGroup = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          params: {
-            role: 'student', // Add query parameter to filter by role
-          },
         });
-        const fetchedStudents = response.data.data;
-        setStudents(fetchedStudents);
+        const allUsers = response.data.data;
+        // Filter users to include only those with the role 'student'
+        const filteredStudents = allUsers.filter(user => user.role === 'student');
+        setStudents(filteredStudents);
       } catch (error) {
         console.error('Error fetching students:', error);
         setError('Failed to fetch students');
