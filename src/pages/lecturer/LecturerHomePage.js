@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios
-import { Link } from 'react-router-dom'; // Use Link for navigation
-import { FaHome, FaUsers, FaCalendarAlt, FaBook, FaUsersCog } from 'react-icons/fa'; // For sidebar icons
-import { HiOutlineLogout, HiChevronDown } from 'react-icons/hi'; // Logout and Dropdown icons
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { FaHome, FaUsers, FaCalendarAlt, FaBook, FaUsersCog } from 'react-icons/fa';
+import { HiOutlineLogout, HiChevronDown } from 'react-icons/hi';
 
 const LecturerHomePage = () => {
     const [assignmentsDropdownOpen, setAssignmentsDropdownOpen] = useState(false);
     const [groupsDropdownOpen, setGroupsDropdownOpen] = useState(false);
-    const [assignmentCount, setAssignmentCount] = useState(0); // State to store assignment count
-    const [announcementCount, setAnnouncementCount] = useState(0); // State to store announcement count
+    const [assignmentCount, setAssignmentCount] = useState(0);
+    const [announcementCount, setAnnouncementCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [allUsers, setAllUsers] = useState([]);
+    const [allAssignments, setAllAssignments] = useState([]);
+    const [allAnnouncements, setAllAnnouncements] = useState([]);
+    const [filteredResults, setFilteredResults] = useState({
+        users: [],
+        assignments: [],
+        announcements: []
+    });
 
     const toggleAssignmentsDropdown = () => {
         setAssignmentsDropdownOpen(!assignmentsDropdownOpen);
@@ -19,45 +30,104 @@ const LecturerHomePage = () => {
     };
 
     useEffect(() => {
-        // Get the token from localStorage
         const token = localStorage.getItem('token');
 
-        // Fetch assignments from the API
-        const fetchAssignments = async () => {
+        const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/v1/assignment', {
-                    headers: {
-                        Authorization: `Bearer ${token}` // Add the token to headers
-                    }
+                // Fetch assignments
+                const assignmentsResponse = await axios.get('http://localhost:4000/api/v1/assignment', {
+                    headers: { Authorization: `Bearer ${token}` }
                 });
-                setAssignmentCount(response.data.length); // Assuming the response is an array
+                setAssignmentCount(assignmentsResponse.data.length);
+                setAllAssignments(assignmentsResponse.data);
+
+                // Fetch announcements
+                const announcementsResponse = await axios.get('http://localhost:4000/api/v1/announcement', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setAnnouncementCount(announcementsResponse.data.length);
+                setAllAnnouncements(announcementsResponse.data);
+
+                // Fetch users
+                const usersResponse = await axios.get('http://localhost:4000/api/v1/user', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                // Adjust this based on the actual API response structure
+                if (Array.isArray(usersResponse.data.data)) {
+                    setAllUsers(usersResponse.data.data);
+                } else if (Array.isArray(usersResponse.data)) {
+                    setAllUsers(usersResponse.data);
+                } else {
+                    console.error('Unexpected data format for users:', usersResponse.data);
+                    setAllUsers([]);
+                }
             } catch (error) {
-                console.error('Error fetching assignments:', error);
+                console.error('Error fetching data:', error);
+                setError('Error fetching data');
             }
         };
 
-        // Fetch announcements from the API
-        const fetchAnnouncements = async () => {
-            try {
-                const response = await axios.get('http://localhost:4000/api/v1/announcement', {
-                    headers: {
-                        Authorization: `Bearer ${token}` // Add the token to headers
-                    }
-                });
-                setAnnouncementCount(response.data.length); // Assuming the response is an array
-            } catch (error) {
-                console.error('Error fetching announcements:', error);
-            }
-        };
+        fetchData();
+    }, []);
 
-        fetchAssignments();
-        fetchAnnouncements();
-    }, []); // Empty dependency array ensures this runs once when the component mounts
+    const handleSearchQueryChange = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+
+        if (!query.trim()) {
+            setFilteredResults({
+                users: [],
+                assignments: [],
+                announcements: []
+            });
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // Ensure all data arrays are valid
+            if (!Array.isArray(allUsers) || !Array.isArray(allAssignments) || !Array.isArray(allAnnouncements)) {
+                throw new Error('Data arrays are not valid');
+            }
+
+            // Filter users locally based on the search query
+            const filteredUsers = allUsers.filter(user =>
+                (user.firstname?.toLowerCase() || '').includes(query.toLowerCase()) ||
+                (user.lastname?.toLowerCase() || '').includes(query.toLowerCase()) ||
+                (user.username?.toLowerCase() || '').includes(query.toLowerCase()) ||
+                (user.regNo?.toLowerCase() || '').includes(query.toLowerCase())
+            );
+
+            // Filter assignments locally based on the search query
+            const filteredAssignments = allAssignments.filter(assignment =>
+                (assignment.title?.toLowerCase() || '').includes(query.toLowerCase())
+            );
+
+            // Filter announcements locally based on the search query
+            const filteredAnnouncements = allAnnouncements.filter(announcement =>
+                (announcement.title?.toLowerCase() || '').includes(query.toLowerCase()) ||
+                (announcement.description?.toLowerCase() || '').includes(query.toLowerCase())
+            );
+
+            setFilteredResults({
+                users: filteredUsers,
+                assignments: filteredAssignments,
+                announcements: filteredAnnouncements
+            });
+            setError(null);
+        } catch (error) {
+            setError('Error processing search');
+            console.error('Error searching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className="flex h-screen bg-gray-900 text-gray-200">
+        <div className="flex h-screen bg-gray-900 text-gray-200 overflow-hidden">
             {/* Sidebar */}
-            <aside className="w-64 bg-gray-800">
+            <aside className="w-64 bg-gray-800 overflow-auto">
                 <div className="flex items-center justify-center py-6 bg-gray-700">
                     <h1 className="text-2xl font-semibold">Lecturer Dashboard</h1>
                 </div>
@@ -144,15 +214,23 @@ const LecturerHomePage = () => {
             </aside>
 
             {/* Main Content Area */}
-            <div className="flex-1">
+            <div className="flex-1 overflow-auto hide-scrollbar">
                 <header className="bg-gray-800 text-gray-200 p-4 flex items-center justify-between">
                     <h2 className="text-xl font-semibold">Dashboard</h2>
-                    <div>
+                    <div className="flex items-center">
                         <input
                             type="text"
                             placeholder="Search..."
+                            value={searchQuery}
+                            onChange={handleSearchQueryChange}
                             className="px-4 py-2 rounded bg-gray-700 text-gray-200 focus:outline-none"
                         />
+                        <button
+                            type="button"
+                            className="ml-2 px-4 py-2 bg-gray-600 text-gray-200 rounded hover:bg-gray-500 focus:outline-none"
+                        >
+                            Search
+                        </button>
                     </div>
                 </header>
 
@@ -171,6 +249,69 @@ const LecturerHomePage = () => {
                             <p className="text-gray-400">You have {announcementCount} notifications.</p>
                         </div>
                     </div>
+
+                    {/* Search Results */}
+                    <section className="mt-6 mb-20">
+                        <h3 className="text-xl font-semibold mb-4">Search Results</h3>
+                        {loading && <p>Loading...</p>}
+                        {error && <p className="text-red-500">{error}</p>}
+                        {searchQuery.trim() && (
+                            <>
+                                {/* Users */}
+                                {filteredResults.users.length > 0 && (
+                                    <div className="mb-6">
+                                        <h4 className="text-lg font-semibold mb-2">Users</h4>
+                                        <ul>
+                                            {filteredResults.users.map((user, index) => (
+                                                <li key={index} className="bg-gray-800 p-4 rounded-lg mb-4 text-left">
+                                                    <p className="text-gray-200"><strong>First Name:</strong> {user.firstname}</p>
+                                                    <p className="text-gray-200"><strong>Last Name:</strong> {user.lastname}</p>
+                                                    <p className="text-gray-200"><strong>Email:</strong> {user.email}</p>
+                                                    <p className="text-gray-200"><strong>Phone:</strong> {user.phone}</p>
+                                                    <p className="text-gray-200"><strong>Reg No:</strong> {user.regNo}</p>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {/* Assignments */}
+                                {filteredResults.assignments.length > 0 && (
+                                    <div className="mb-6">
+                                        <h4 className="text-lg font-semibold mb-2">Assignments</h4>
+                                        <ul>
+                                            {filteredResults.assignments.map((assignment, index) => (
+                                                <li key={index} className="bg-gray-800 p-4 rounded-lg mb-4 text-left">
+                                                    <p className="text-gray-200"><strong>Title:</strong> {assignment.title}</p>
+                                                    <p className="text-gray-200"><strong>Description:</strong> {assignment.description}</p>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {/* Announcements */}
+                                {filteredResults.announcements.length > 0 && (
+                                    <div className="mb-6">
+                                        <h4 className="text-lg font-semibold mb-2">Announcements</h4>
+                                        <ul>
+                                            {filteredResults.announcements.map((announcement, index) => (
+                                                <li key={index} className="bg-gray-800 p-4 rounded-lg mb-4 text-left">
+                                                    <p className="text-gray-200"><strong>Title:</strong> {announcement.title}</p>
+                                                    <p className="text-gray-200"><strong>Description:</strong> {announcement.desc}</p>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {/* No Results */}
+                                {filteredResults.users.length === 0 && filteredResults.assignments.length === 0 && filteredResults.announcements.length === 0 && (
+                                    <p className="text-gray-400">No results found.</p>
+                                )}
+                            </>
+                        )}
+                    </section>
                 </main>
             </div>
         </div>

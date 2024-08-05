@@ -23,9 +23,10 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AllUsersPage from "./pages/admin/AllUsersPage";
 import Help from "./pages/Help";
 import AllLecturersPage from "./pages/admin/AllLecturersPage";
+import AllAnnouncemntPage from "./pages/admin/AllAnnouncementPage";
 
 const App = () => {
-  const { isLoggedIn, isAdmin, isLecturer, isStudent } = useContext(AuthContext);
+  const { isLoggedIn, isAdmin, isLecturer } = useContext(AuthContext);
 
   return (
     <Router>
@@ -97,6 +98,10 @@ const App = () => {
           <Route
             path="/all-lecturers"
             element={isAdmin ? <AllLecturersPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/all-announcements"
+            element={isAdmin ? <AllAnnouncemntPage /> : <Navigate to="/login" />}
           />
 
           {/* Help Page (accessible by everyone) */}

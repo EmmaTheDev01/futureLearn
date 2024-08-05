@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import { useContext } from 'react';
 
 const Home = () => {
-    const { login } = useContext(AuthContext); // Get login function from AuthContext
+    const { login } = useContext(AuthContext); 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,7 +27,7 @@ const Home = () => {
             localStorage.setItem('role', response.data.role);
             localStorage.setItem('userEmail', response.data.data.email);
              // Ensure role is stored
-            login(response.data.token, response.data.role); // Call the login method from context
+            login(response.data.token, response.data.role); 
             navigate('/home'); // Navigate to the home page
             
         } catch (error) {
