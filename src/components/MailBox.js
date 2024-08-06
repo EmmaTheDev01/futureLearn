@@ -9,6 +9,13 @@ const MailBox = (props) => {
     navigate(`/my-mail/${props.item._id}`);
   };
 
+  // Function to safely render text without HTML elements
+  const getPlainText = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
+
   return (
     <div
       onClick={handleClick}
@@ -19,7 +26,7 @@ const MailBox = (props) => {
       </div>
       <div className="flex-1">
         <h4 className="text-lg font-semibold text-gray-100 mb-1 text-start w-full">{props.item.subject}</h4>
-        <p className="text-gray-400 h-[20px] overflow-hidden text-start">{props.item.text}</p>
+        <p className="text-gray-400 h-[20px] overflow-hidden text-start">{getPlainText(props.item.text)}</p>
       </div>
       <div className="ml-4 text-gray-400">
         <FaStar className="text-xl" />
